@@ -13,7 +13,6 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "ImageTransmission"
-include ':app'
 include ':app_accessory'
 include ':app_host'
 include ':app_sdk'
