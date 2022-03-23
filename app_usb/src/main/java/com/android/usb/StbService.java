@@ -3,6 +3,7 @@ package com.android.usb;
 import android.app.Activity;
 import android.app.Service;
 import android.content.Intent;
+import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
 import android.media.AudioFormat;
 import android.media.AudioManager;
@@ -25,7 +26,7 @@ public class StbService extends Service {
 
     private static final String TAG = "wlzhou";
 
-    private static SurfaceHolder surfaceHolder;
+    private static SurfaceTexture surfaceTexture;
 
     private static Activity activity;
 
@@ -80,7 +81,7 @@ public class StbService extends Service {
             initCameraInfo();
             openCamera();
             setPreviewSize(1200, 1600);
-            setPreviewSurface(surfaceHolder);
+            setPreviewSurface(surfaceTexture);
             startPreview();
         }
 
@@ -100,8 +101,8 @@ public class StbService extends Service {
         }
     }
 
-    public static void setSurfaceHolder(SurfaceHolder sh) {
-        surfaceHolder = sh;
+    public static void setSurfaceTexture(SurfaceTexture st) {
+        surfaceTexture = st;
     }
 
     public static void setActivity(Activity a) {
@@ -223,10 +224,10 @@ public class StbService extends Service {
     }
 
     // 设置预览 Surface
-    private void setPreviewSurface(SurfaceHolder previewSurface) {
-        if (mCamera != null && previewSurface != null) {
+    private void setPreviewSurface(SurfaceTexture surfaceTexture) {
+        if (mCamera != null && surfaceTexture != null) {
             try {
-                mCamera.setPreviewDisplay(previewSurface);
+                mCamera.setPreviewTexture(surfaceTexture);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -263,7 +264,6 @@ public class StbService extends Service {
     public void startPlay() {
         start = true;
         Log.d(TAG, "[startPlay] -> yes");
-//        Toast.makeText(activity, "startPlay", Toast.LENGTH_SHORT).show();
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -290,6 +290,5 @@ public class StbService extends Service {
     public void stopPlay() {
         start = false;
         Log.d(TAG, "[startPlay] -> false");
-//        Toast.makeText(activity, "stopPlay", Toast.LENGTH_SHORT).show();
     }
 }

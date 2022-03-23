@@ -5,8 +5,8 @@
     android:layout_height="match_parent"
     tools:context=".StbActivity">
 
-    <SurfaceView
-        android:id="@+id/sv"
+    <TextureView
+        android:id="@+id/tv"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

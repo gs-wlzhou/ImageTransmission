@@ -9,12 +9,12 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
+import android.graphics.SurfaceTexture;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.util.Log;
-import android.view.SurfaceHolder;
-import android.view.SurfaceView;
+import android.view.TextureView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -28,8 +28,7 @@ public class StbActivity extends AppCompatActivity {
     private static final String[] REQUIRED_PERMISSIONS = {Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO};
     private static final int REQUEST_PERMISSIONS_CODE = 1;
 
-    private SurfaceView surfaceView;
-    private SurfaceHolder surfaceHolder;
+    private TextureView textureView;
     private Button rotate;
 
     private IStbService stbService;
@@ -114,27 +113,32 @@ public class StbActivity extends AppCompatActivity {
     }
 
     private void initView() {
-        surfaceView = (SurfaceView) findViewById(R.id.sv);
-        rotate = (Button) findViewById(R.id.rotate);
-        surfaceHolder = surfaceView.getHolder();
-        surfaceHolder.addCallback(new SurfaceHolder.Callback() {
+        textureView = (TextureView) findViewById(R.id.tv);
+        textureView.setSurfaceTextureListener(new TextureView.SurfaceTextureListener() {
             @Override
-            public void surfaceCreated(@NonNull SurfaceHolder surfaceHolder) {
-                Toast.makeText(getBaseContext(), "surfaceCreated", Toast.LENGTH_SHORT).show();
-                StbService.setSurfaceHolder(surfaceHolder);
+            public void onSurfaceTextureAvailable(@NonNull SurfaceTexture surfaceTexture, int i, int i1) {
+                Toast.makeText(getBaseContext(), "onSurfaceTextureAvailable", Toast.LENGTH_SHORT).show();
+                StbService.setSurfaceTexture(surfaceTexture);
                 StbService.setActivity(StbActivity.this);
+                textureView.setScaleY(-1f);
             }
 
             @Override
-            public void surfaceChanged(@NonNull SurfaceHolder surfaceHolder, int i, int i1, int i2) {
+            public void onSurfaceTextureSizeChanged(@NonNull SurfaceTexture surfaceTexture, int i, int i1) {
 
             }
 
             @Override
-            public void surfaceDestroyed(@NonNull SurfaceHolder surfaceHolder) {
+            public boolean onSurfaceTextureDestroyed(@NonNull SurfaceTexture surfaceTexture) {
+                return false;
+            }
+
+            @Override
+            public void onSurfaceTextureUpdated(@NonNull SurfaceTexture surfaceTexture) {
 
             }
         });
+        rotate = (Button) findViewById(R.id.rotate);
         rotate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
