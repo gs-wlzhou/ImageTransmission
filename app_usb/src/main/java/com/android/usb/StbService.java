@@ -36,7 +36,7 @@ public class StbService extends Service {
     private Camera.CameraInfo mBackCameraInfo;
     private int mBackCameraId = -1;
 
-    private int degrees = 90;
+    private int degrees = 270;
 
     public AudioRecord mAudioRecord;
     public AudioTrack mAudioTrack;
@@ -155,12 +155,12 @@ public class StbService extends Service {
             // 优先开启前置摄像头
             Log.d(TAG, "[openCamera] open FrontCamera");
             mCamera = Camera.open(mFrontCameraId);
-            mCamera.setDisplayOrientation(getCameraDisplayOrientation(mFrontCameraInfo));
+            mCamera.setDisplayOrientation(180);
         } else if (hasBackCamera()) {
             // 没有前置，就尝试开启后置摄像头
             Log.d(TAG, "[openCamera] open BackCamera");
             mCamera = Camera.open(mBackCameraId);
-            mCamera.setDisplayOrientation(getCameraDisplayOrientation(mBackCameraInfo));
+            mCamera.setDisplayOrientation(180);
         } else {
             Log.d(TAG, "no Camera");
             throw new RuntimeException("没有任何相机可以开启！");

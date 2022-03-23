@@ -39,7 +39,6 @@ public class StbActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         hideTitle();
         setContentView(R.layout.activity_stb);
-        bindStbService();
         initView();
     }
 
@@ -47,6 +46,8 @@ public class StbActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         Log.d(TAG, "[onStart]");
+        // 绑定服务
+        bindStbService();
     }
 
     @Override
@@ -70,15 +71,14 @@ public class StbActivity extends AppCompatActivity {
         } catch (RemoteException e) {
             e.printStackTrace();
         }
+        // 解绑服务
+        unBindStbService();
     }
 
     @Override
     protected void onDestroy() {
         Log.d(TAG, "[onDestroy]");
         super.onDestroy();
-        Intent intent = new Intent(this, StbService.class);
-        unbindService(stbServiceConnection);
-        stopService(intent);
     }
 
     @Override
@@ -117,7 +117,6 @@ public class StbActivity extends AppCompatActivity {
         textureView.setSurfaceTextureListener(new TextureView.SurfaceTextureListener() {
             @Override
             public void onSurfaceTextureAvailable(@NonNull SurfaceTexture surfaceTexture, int i, int i1) {
-                Toast.makeText(getBaseContext(), "onSurfaceTextureAvailable", Toast.LENGTH_SHORT).show();
                 StbService.setSurfaceTexture(surfaceTexture);
                 StbService.setActivity(StbActivity.this);
                 textureView.setScaleY(-1f);
@@ -156,6 +155,12 @@ public class StbActivity extends AppCompatActivity {
         startService(intent);
         boolean b = bindService(intent, stbServiceConnection, BIND_AUTO_CREATE);
         Log.d(TAG, "[bindStbService] isBind -> " + b);
+    }
+
+    private void unBindStbService() {
+        Intent intent = new Intent(this, StbService.class);
+        unbindService(stbServiceConnection);
+        stopService(intent);
     }
 
     private ServiceConnection stbServiceConnection = new ServiceConnection() {
