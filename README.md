@@ -229,5 +229,8 @@ MediaMuxer：音视频合成器，视频音频合成，视频合成等等，常�
 ### 参考
 
 ```
-![Android USB通讯(完整版)](https://blog.csdn.net/yaohui_/article/details/62435460?spm=1001.2014.3001.5502)
+Android USB通讯(完整版)：https://blog.csdn.net/yaohui_/article/details/62435460?spm=1001.2014.3001.5502
+USB 主机和配件概览：https://developer.android.com/guide/topics/connectivity/usb
+音视频系列--MediaProjection+MediaCodec制作简单投屏效果：https://blog.csdn.net/qq_18242391/article/details/111566304
+手机投屏H265，H264硬编码，局域网socket通信实现。：https://my.oschina.net/zemingzeng/blog/4817148
 ```
