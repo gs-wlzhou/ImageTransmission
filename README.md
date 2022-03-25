@@ -207,3 +207,17 @@ public class CameraActivity extends AppCompatActivity {
 https://github.com/hiwlzhou/ImageTransmission/tree/master/app_camera
 https://github.com/hiwlzhou/ImageTransmission/tree/master/app_api
 ```
+
+### 相关流程图
+
+1. 手机投屏原理
+
+![](https://img-blog.csdnimg.cn/69a05d562da9475fb33480e94e24a28c.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAXzEzMjg=,size_20,color_FFFFFF,t_70,g_se,x_16#pic_center)
+
+2. USB 通讯流程
+
+![](https://img-blog.csdnimg.cn/41aec84e1d2641849d885b90fb1318ac.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAXzEzMjg=,size_20,color_FFFFFF,t_70,g_se,x_16#pic_center)
+
+3. MediaCodec 原理
+
+![](https://img-blog.csdnimg.cn/f0c62c9a480041fbbb9d2f34fa42c9e8.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAXzEzMjg=,size_20,color_FFFFFF,t_70,g_se,x_16#pic_center)
