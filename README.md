@@ -27,7 +27,7 @@ C03 充当 USB 摄像头，使用 HDMI - USB 转接线连接到机顶盒，机�
 
 #### 二、SDK 使用指南
 
-1. 导入 SDK
++ 导入 SDK
 
 将 classes.jar 拷贝至 Android 工程的 libs 目录下，修改 build.gradle 文件，编译项目。
 
@@ -37,7 +37,7 @@ dependencies {
 }
 ```
 
-2. 主要接口
++ 主要接口
 
 ```
 interface ICameraService {
@@ -46,7 +46,7 @@ interface ICameraService {
 }
 ```
 
-3. 添加用户权限
++ 添加用户权限
 
 在工程 AndroidManifest.xml 文件中添加如下权限，注册 service。
 
@@ -57,7 +57,7 @@ interface ICameraService {
 <service android:name="com.android.api.CameraService" android:exported="true"/>
 ```
 
-4. 布局文件添加 TextureView
++ 布局文件添加 TextureView
 
 android:layout_width 和 android:layout_height 指定画面显示大小。
 
@@ -68,7 +68,7 @@ android:layout_width 和 android:layout_height 指定画面显示大小。
     android:layout_height="match_parent" />
 ```
 
-5. 示例 Activity
++ 示例 Activity
 
 ```
 public class CameraActivity extends AppCompatActivity {
@@ -210,9 +210,9 @@ https://github.com/hiwlzhou/ImageTransmission/tree/master/app_api
 
 ### 相关流程图
 
-1. 手机投屏原理
-2. USB 通讯流程
-3. MediaCodec 原理
++ 手机投屏原理
++ USB 通讯流程
++ MediaCodec 原理
 
 ### Android 音视频开发
 
