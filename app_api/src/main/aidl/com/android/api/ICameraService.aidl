@@ -1,4 +1,4 @@
-package com.android.sdk;
+package com.android.api;
 
 interface ICameraService {
 

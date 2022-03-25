@@ -18,7 +18,7 @@ import android.view.TextureView;
 import android.widget.Toast;
 
 import com.android.api.CameraService;
-import com.android.sdk.ICameraService;
+import com.android.api.ICameraService;
 
 public class CameraActivity extends AppCompatActivity {
 

@@ -1,6 +1,5 @@
 package com.android.api;
 
-import android.app.Activity;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -29,8 +28,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
-import com.android.sdk.ICameraService;
 
 import java.util.Arrays;
 
