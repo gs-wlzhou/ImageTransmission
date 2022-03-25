@@ -4,20 +4,16 @@
 
 #### 完整 Demo 下载
 
-```
-https://github.com/hiwlzhou/ImageTransmission/tree/master/app_host
-https://github.com/hiwlzhou/ImageTransmission/tree/master/app_accessory
-https://github.com/hiwlzhou/ImageTransmission/tree/master/app_sdk
-```
++ https://github.com/hiwlzhou/ImageTransmission/tree/master/app_host
++ https://github.com/hiwlzhou/ImageTransmission/tree/master/app_accessory
++ https://github.com/hiwlzhou/ImageTransmission/tree/master/app_sdk
 
 ### Camera1 实现镜像传输
 
 #### 完整 Demo 下载
 
-```
-https://github.com/hiwlzhou/ImageTransmission/tree/master/app_stb
-https://github.com/hiwlzhou/ImageTransmission/tree/master/app_usb
-```
++ https://github.com/hiwlzhou/ImageTransmission/tree/master/app_stb
++ https://github.com/hiwlzhou/ImageTransmission/tree/master/app_usb
 
 ### Camera2 实现镜像传输
 
