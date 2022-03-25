@@ -2,6 +2,12 @@
 
 ### MediaProjection + MediaCodec 实现简易投屏
 
+#### 相关流程图
+
+1. 手机投屏原理
+
+![](https://img-blog.csdnimg.cn/69a05d562da9475fb33480e94e24a28c.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAXzEzMjg=,size_20,color_FFFFFF,t_70,g_se,x_16#pic_center)
+
 #### 完整 Demo 下载
 
 ```
@@ -199,7 +205,7 @@ public class CameraActivity extends AppCompatActivity {
 
 使用 HDMI - USB 转接线连接 C03 和机顶盒，完成 C03 到机顶盒的镜像传输。注：HDMI 端连接 C03，USB 端连接机顶盒。
 
-![使用过程](https://img-blog.csdnimg.cn/de46ec0fb9c0400e84bdfb39ddd378d0.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAXzEzMjg=,size_13,color_FFFFFF,t_70,g_se,x_16#pic_center)
+![](https://img-blog.csdnimg.cn/de46ec0fb9c0400e84bdfb39ddd378d0.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAXzEzMjg=,size_13,color_FFFFFF,t_70,g_se,x_16#pic_center)
 
 #### 四、完整 Demo 下载
 
