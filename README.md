@@ -233,4 +233,8 @@ Android USB通讯(完整版)：https://blog.csdn.net/yaohui_/article/details/624
 USB 主机和配件概览：https://developer.android.com/guide/topics/connectivity/usb
 音视频系列--MediaProjection+MediaCodec制作简单投屏效果：https://blog.csdn.net/qq_18242391/article/details/111566304
 手机投屏H265，H264硬编码，局域网socket通信实现。：https://my.oschina.net/zemingzeng/blog/4817148
+Android Camera1 教程 · 第一章 · 开启相机：https://www.jianshu.com/p/3440d82545f6
+Android Camera1 教程 · 第二章 · 预览：https://www.jianshu.com/p/705d4792e836
+Android：Camera2的简单使用：https://www.cnblogs.com/davidFB/p/15090897.html
+android音视频知识一（AudioRecord与AudioTrack）：https://zhuanlan.zhihu.com/p/91139984
 ```
