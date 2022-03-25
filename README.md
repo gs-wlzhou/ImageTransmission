@@ -1,8 +1,8 @@
-### ImageTransmission
+## ImageTransmission
 
-#### MediaProjection + MediaCodec 实现简易投屏
+### MediaProjection + MediaCodec 实现简易投屏
 
-##### 完整 Demo 下载
+#### 完整 Demo 下载
 
 ```
 https://github.com/hiwlzhou/ImageTransmission/tree/master/app_host
@@ -10,22 +10,22 @@ https://github.com/hiwlzhou/ImageTransmission/tree/master/app_accessory
 https://github.com/hiwlzhou/ImageTransmission/tree/master/app_sdk
 ```
 
-#### Camera1 实现镜像传输
+### Camera1 实现镜像传输
 
-##### 完整 Demo 下载
+#### 完整 Demo 下载
 
 ```
 https://github.com/hiwlzhou/ImageTransmission/tree/master/app_stb
 https://github.com/hiwlzhou/ImageTransmission/tree/master/app_usb
 ```
 
-#### Camera2 实现镜像传输
+### Camera2 实现镜像传输
 
-##### 一、功能简介
+#### 一、功能简介
 
 C03 充当 USB 摄像头，使用 HDMI - USB 转接线连接到机顶盒，机顶盒再通过显示器输出 C03 画面内容。使用安卓 Camera2 以及 AudioRecord 和 AudioTrack 完成视频和音频的传输。
 
-##### 二、SDK 使用指南
+#### 二、SDK 使用指南
 
 1. 导入 SDK
 
@@ -195,23 +195,23 @@ public class CameraActivity extends AppCompatActivity {
 }
 ```
 
-##### 三、功能操作步骤
+#### 三、功能操作步骤
 
 使用 HDMI - USB 转接线连接 C03 和机顶盒，完成 C03 到机顶盒的镜像传输。注：HDMI 端连接 C03，USB 端连接机顶盒。
 
 ![](https://img-blog.csdnimg.cn/de46ec0fb9c0400e84bdfb39ddd378d0.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAXzEzMjg=,size_13,color_FFFFFF,t_70,g_se,x_16#pic_center)
 
-##### 四、完整 Demo 下载
+#### 四、完整 Demo 下载
 
 ```
 https://github.com/hiwlzhou/ImageTransmission/tree/master/app_camera
 https://github.com/hiwlzhou/ImageTransmission/tree/master/app_api
 ```
 
-#### 相关流程图
+### 相关流程图
 
 1. 手机投屏原理
 2. USB 通讯流程
 3. MediaCodec 原理
 
-#### Android 音视频开发
+### Android 音视频开发
