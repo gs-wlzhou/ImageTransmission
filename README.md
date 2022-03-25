@@ -212,25 +212,21 @@ https://github.com/hiwlzhou/ImageTransmission/tree/master/app_api
 
 ### Android 音视频开发
 
-```
-MediaRecoder：音视频录制的上层API，通过一些简单的配置，就可以直接录制音视频保存到指定的文件路径。
-MediaPlayer：音视频播放的上层API，可以用来播放音频和视频文件，特别常用的API。
-AudioRecord：音频录制的API，通过流的形式输出的音频数据是未经过编码的，也就是PCM原数据，无法直接使用播放器进行播放。
-AudioTrack：音频播放的API，可以播放未经过编码的的PCM原始音频数据。
-MediaCodec：音视频的编码和解码器，应该是这个系列最重要的API了，为了配合他的使用，还得用到MediaFormat等其他的API。
-MediaExtractor：音视频分提取器，例如把某视频文件中的音频提取出来保存成一个音频文件。
-MediaMuxer：音视频合成器，视频音频合成，视频合成等等，常用与MediaExtractor一起使用。
-```
++ MediaRecoder：音视频录制的上层API，通过一些简单的配置，就可以直接录制音视频保存到指定的文件路径。
++ MediaPlayer：音视频播放的上层API，可以用来播放音频和视频文件，特别常用的API。
++ AudioRecord：音频录制的API，通过流的形式输出的音频数据是未经过编码的，也就是PCM原数据，无法直接使用播放器进行播放。
++ AudioTrack：音频播放的API，可以播放未经过编码的的PCM原始音频数据。
++ MediaCodec：音视频的编码和解码器，应该是这个系列最重要的API了，为了配合他的使用，还得用到MediaFormat等其他的API。
++ MediaExtractor：音视频分提取器，例如把某视频文件中的音频提取出来保存成一个音频文件。
++ MediaMuxer：音视频合成器，视频音频合成，视频合成等等，常用与MediaExtractor一起使用。
 
 ### 参考
 
-```
-Android USB通讯(完整版)：https://blog.csdn.net/yaohui_/article/details/62435460?spm=1001.2014.3001.5502
-USB 主机和配件概览：https://developer.android.com/guide/topics/connectivity/usb
-音视频系列--MediaProjection+MediaCodec制作简单投屏效果：https://blog.csdn.net/qq_18242391/article/details/111566304
-手机投屏H265，H264硬编码，局域网socket通信实现。：https://my.oschina.net/zemingzeng/blog/4817148
-Android Camera1 教程 · 第一章 · 开启相机：https://www.jianshu.com/p/3440d82545f6
-Android Camera1 教程 · 第二章 · 预览：https://www.jianshu.com/p/705d4792e836
-Android：Camera2的简单使用：https://www.cnblogs.com/davidFB/p/15090897.html
-android音视频知识一（AudioRecord与AudioTrack）：https://zhuanlan.zhihu.com/p/91139984
-```
++ Android USB通讯(完整版)：https://blog.csdn.net/yaohui_/article/details/62435460?spm=1001.2014.3001.5502
++ USB 主机和配件概览：https://developer.android.com/guide/topics/connectivity/usb
++ 音视频系列--MediaProjection+MediaCodec制作简单投屏效果：https://blog.csdn.net/qq_18242391/article/details/111566304
++ 手机投屏H265，H264硬编码，局域网socket通信实现。：https://my.oschina.net/zemingzeng/blog/4817148
++ Android Camera1 教程 · 第一章 · 开启相机：https://www.jianshu.com/p/3440d82545f6
++ Android Camera1 教程 · 第二章 · 预览：https://www.jianshu.com/p/705d4792e836
++ Android：Camera2的简单使用：https://www.cnblogs.com/davidFB/p/15090897.html
++ android音视频知识一（AudioRecord与AudioTrack）：https://zhuanlan.zhihu.com/p/91139984
