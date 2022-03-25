@@ -70,7 +70,7 @@ android:layout_width 和 android:layout_height 指定画面显示大小。
 
 + 示例 Activity
 
-```
+```java
 public class CameraActivity extends AppCompatActivity {
     private static final String TAG = "wlzhou";
     private static final String[] REQUIRED_PERMISSIONS = {Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO};
