@@ -219,7 +219,7 @@ https://github.com/hiwlzhou/ImageTransmission/tree/master/app_api
 ```
 MediaRecoder：音视频录制的上层API，通过一些简单的配置，就可以直接录制音视频保存到指定的文件路径。
 MediaPlayer：音视频播放的上层API，可以用来播放音频和视频文件，特别常用的API。
-AudioRecord：音频录制的API，通过流的形式输出的音频数据是未经过编码的，也就是PCM原数据，所以直接保存录制出的内容是无法直接使用播放器进行播放。
+AudioRecord：音频录制的API，通过流的形式输出的音频数据是未经过编码的，也就是PCM原数据，无法直接使用播放器进行播放。
 AudioTrack：音频播放的API，可以播放未经过编码的的PCM原始音频数据。
 MediaCodec：音视频的编码和解码器，应该是这个系列最重要的API了，为了配合他的使用，还得用到MediaFormat等其他的API。
 MediaExtractor：音视频分提取器，例如把某视频文件中的音频提取出来保存成一个音频文件。
