@@ -10,37 +10,46 @@ C03 充当 USB 摄像头，使用 HDMI - USB 转接线连接到机顶盒，机�
 
 将 classes.jar 拷贝至 Android 工程的 libs 目录下，修改 build.gradle 文件，编译项目。
 
+```
 dependencies {
     implementation files('libs/classes.jar') // add
 }
+```
 
 2. 主要接口
 
+```
 interface ICameraService {
     void startC03Preview(); // 开启C03预览
     void stopC03Preview(); // 关闭C03预览
 }
+```
 
 3. 添加用户权限
 
 在工程 AndroidManifest.xml 文件中添加如下权限，注册 service。
 
+```
 <uses-permission android:name="android.permission.CAMERA"/>
 <uses-permission android:name="android.permission.RECORD_AUDIO"/>
 
 <service android:name="com.android.api.CameraService" android:exported="true"/>
+```
 
 4. 布局文件添加 TextureView
 
 android:layout_width 和 android:layout_height 指定画面显示大小。
 
+```
 <TextureView
     android:id="@+id/tv"
     android:layout_width="match_parent"
     android:layout_height="match_parent" />
+```
 
 5. 示例 Activity
 
+```
 public class CameraActivity extends AppCompatActivity {
     private static final String TAG = "wlzhou";
     private static final String[] REQUIRED_PERMISSIONS = {Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO};
@@ -163,6 +172,7 @@ public class CameraActivity extends AppCompatActivity {
         }
     };
 }
+```
 
 ## 三、功能操作步骤
 
