@@ -58,6 +58,7 @@ public class CameraService extends Service implements UsbDeviceReceiver.UsbDevic
     public void onCreate() {
         Log.d(TAG, "[onCreate]");
         super.onCreate();
+        registerUsbDeviceReceiver();
     }
 
     @Override
@@ -70,6 +71,7 @@ public class CameraService extends Service implements UsbDeviceReceiver.UsbDevic
     public void onDestroy() {
         Log.d(TAG, "[onDestroy]");
         super.onDestroy();
+        unregisterUsbDeviceReceiver();
     }
 
     @Nullable
@@ -114,24 +116,6 @@ public class CameraService extends Service implements UsbDeviceReceiver.UsbDevic
             closeCamera();
             destroyHandler();
             stopPlay();
-        }
-
-        @Override
-        public void registerUsbDeviceReceiver() throws RemoteException {
-            if (usbDeviceReceiver == null) {
-                IntentFilter intentFilter = new IntentFilter();
-                intentFilter.addAction(UsbManager.ACTION_USB_DEVICE_ATTACHED);
-                intentFilter.addAction(UsbManager.ACTION_USB_DEVICE_DETACHED);
-                usbDeviceReceiver = new UsbDeviceReceiver(CameraService.this);
-                registerReceiver(usbDeviceReceiver, intentFilter);
-                Log.d(TAG, "[registerUsbDeviceReceiver]");
-            }
-        }
-
-        @Override
-        public void unregisterUsbDeviceReceiver() throws RemoteException {
-            unregisterReceiver(usbDeviceReceiver);
-            Log.d(TAG, "[unregisterUsbDeviceReceiver]");
         }
     }
 
@@ -306,5 +290,25 @@ public class CameraService extends Service implements UsbDeviceReceiver.UsbDevic
     public void stopPlay() {
         start = false;
         Log.d(TAG, "[stopPlay] -> yes");
+    }
+
+    // 注册广播监听取消
+    public void registerUsbDeviceReceiver() {
+        if (usbDeviceReceiver == null) {
+            IntentFilter intentFilter = new IntentFilter();
+            intentFilter.addAction(UsbManager.ACTION_USB_DEVICE_ATTACHED);
+            intentFilter.addAction(UsbManager.ACTION_USB_DEVICE_DETACHED);
+            usbDeviceReceiver = new UsbDeviceReceiver(CameraService.this);
+            registerReceiver(usbDeviceReceiver, intentFilter);
+            Log.d(TAG, "[registerUsbDeviceReceiver]");
+        }
+    }
+
+    // 取消广播监听
+    public void unregisterUsbDeviceReceiver() {
+        if (usbDeviceReceiver != null) {
+            unregisterReceiver(usbDeviceReceiver);
+            Log.d(TAG, "[unregisterUsbDeviceReceiver]");
+        }
     }
 }

@@ -162,13 +162,6 @@ public class CameraActivity extends AppCompatActivity {
             Log.d(TAG, "[onServiceConnected]");
             cameraService = ICameraService.Stub.asInterface(iBinder);
 
-            // 服务绑定成功后监听广播
-            try {
-                cameraService.registerUsbDeviceReceiver();
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
-
             if (!hasPermissions()) {
                 requestPermissions(REQUIRED_PERMISSIONS, REQUEST_PERMISSIONS_CODE);
             } else {
@@ -183,14 +176,6 @@ public class CameraActivity extends AppCompatActivity {
         @Override
         public void onServiceDisconnected(ComponentName componentName) {
             Log.d(TAG, "onServiceDisconnected");
-
-            // 服务解绑后取消监听广播
-            try {
-                cameraService.unregisterUsbDeviceReceiver();
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
-
             cameraService = null;
         }
     };
