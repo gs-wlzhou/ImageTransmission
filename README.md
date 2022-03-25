@@ -225,3 +225,9 @@ MediaCodec：音视频的编码和解码器，应该是这个系列最重要的A
 MediaExtractor：音视频分提取器，例如把某视频文件中的音频提取出来保存成一个音频文件。
 MediaMuxer：音视频合成器，视频音频合成，视频合成等等，常用与MediaExtractor一起使用。
 ```
+
+### 参考
+
+```
+![Android USB通讯(完整版)](https://blog.csdn.net/yaohui_/article/details/62435460?spm=1001.2014.3001.5502)
+```
