@@ -230,3 +230,4 @@ https://github.com/hiwlzhou/ImageTransmission/tree/master/app_api
 + Android Camera1 教程 · 第二章 · 预览：https://www.jianshu.com/p/705d4792e836
 + Android：Camera2的简单使用：https://www.cnblogs.com/davidFB/p/15090897.html
 + android音视频知识一（AudioRecord与AudioTrack）：https://zhuanlan.zhihu.com/p/91139984
++ 
