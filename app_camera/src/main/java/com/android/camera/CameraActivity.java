@@ -64,7 +64,7 @@ public class CameraActivity extends AppCompatActivity {
         Log.d(TAG, "[onStop]");
         super.onStop();
         try {
-            cameraService.stopC03Preview();
+            cameraService.stopUsbCameraPreview();
         } catch (RemoteException e) {
             e.printStackTrace();
         }
@@ -99,7 +99,7 @@ public class CameraActivity extends AppCompatActivity {
         }
         if (flag) {
             try {
-                cameraService.startC03Preview();
+                cameraService.startUsbCameraPreview();
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
@@ -166,7 +166,7 @@ public class CameraActivity extends AppCompatActivity {
                 requestPermissions(REQUIRED_PERMISSIONS, REQUEST_PERMISSIONS_CODE);
             } else {
                 try {
-                    cameraService.startC03Preview();
+                    cameraService.startUsbCameraPreview();
                 } catch (RemoteException e) {
                     e.printStackTrace();
                 }

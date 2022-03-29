@@ -105,14 +105,14 @@ public class CameraService extends Service implements UsbDeviceReceiver.UsbDevic
     class CameraBinder extends ICameraService.Stub {
 
         @Override
-        public void startC03Preview() throws RemoteException {
+        public void startUsbCameraPreview() throws RemoteException {
             initData();
             initHandler();
             openCamera();
         }
 
         @Override
-        public void stopC03Preview() throws RemoteException {
+        public void stopUsbCameraPreview() throws RemoteException {
             closeCamera();
             destroyHandler();
             stopPlay();

@@ -2,7 +2,7 @@ package com.android.api;
 
 interface ICameraService {
 
-    void startC03Preview();
+    void startUsbCameraPreview();
 
-    void stopC03Preview();
+    void stopUsbCameraPreview();
 }
