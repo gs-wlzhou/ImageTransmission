@@ -66,8 +66,8 @@ public class CameraService extends Service implements UsbDeviceReceiver.UsbDevic
 
     @Override
     public void onDestroy() {
-        LogUtils.d("onDestroy");
         super.onDestroy();
+        LogUtils.d("onDestroy");
         unregisterUsbDeviceReceiver();
     }
 

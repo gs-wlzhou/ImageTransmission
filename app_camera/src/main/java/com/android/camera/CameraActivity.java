@@ -27,7 +27,7 @@ public class CameraActivity extends AppCompatActivity {
         LogUtils.d("onCreate");
         hideTitle();
         setContentView(R.layout.activity_camera);
-        init();
+        initView();
     }
 
     @Override
@@ -85,7 +85,7 @@ public class CameraActivity extends AppCompatActivity {
         UsbCameraManager.startUsbCameraPreview(CameraActivity.this);
     }
 
-    private void init() {
+    private void initView() {
         textureView = findViewById(R.id.tv);
         textureView.setSurfaceTextureListener(new TextureView.SurfaceTextureListener() {
             @Override
