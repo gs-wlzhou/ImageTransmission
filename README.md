@@ -36,9 +36,24 @@ dependencies {
 + 主要接口
 
 ```java
-interface ICameraService {
-    void startC03Preview(); // 开启C03预览
-    void stopC03Preview(); // 关闭C03预览
+public class UsbCameraManager {
+
+    /**
+     * 设置预览画面显示
+     * @param TextureView实例
+     */
+    public static void setTextureView(TextureView tv) {}
+    
+    /**
+     * 开启摄像头预览
+     * @param Activity实例
+     */
+    public static void startUsbCameraPreview(Activity a) {}
+    
+    /**
+     * 停止摄像头预览
+     */
+    public static void stopUsbCameraPreview() {}
 }
 ```
 
