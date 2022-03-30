@@ -21,6 +21,7 @@ public class UsbCameraManager {
      * @param TextureView实例
      */
     public static void setTextureView(TextureView tv) {
+        LogUtils.d("set texture view");
         CameraService.setTextureView(tv);
     }
 
@@ -29,6 +30,7 @@ public class UsbCameraManager {
      * @param Activity实例
      */
     public static void startUsbCameraPreview(Activity a) {
+        LogUtils.d("start usb camera preview");
         activity = a;
         bindCameraService();
     }
@@ -37,6 +39,7 @@ public class UsbCameraManager {
      * 停止摄像头预览
      */
     public static void stopUsbCameraPreview() {
+        LogUtils.d("stop usb camera preview");
         try {
             cameraService.stopUsbCameraPreview();
         } catch (RemoteException e) {
@@ -47,6 +50,7 @@ public class UsbCameraManager {
     }
 
     private static void bindCameraService() {
+        LogUtils.d("bind camera service");
         Intent intent = new Intent(activity, CameraService.class);
         activity.startService(intent);
         boolean flag = activity.bindService(intent, cameraServiceConnection, Context.BIND_AUTO_CREATE);
@@ -54,6 +58,7 @@ public class UsbCameraManager {
     }
 
     private static void unBindCameraService() {
+        LogUtils.d("unBind camera service");
         Intent intent = new Intent(activity, CameraService.class);
         activity.unbindService(cameraServiceConnection);
         activity.stopService(intent);

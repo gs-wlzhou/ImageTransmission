@@ -4,18 +4,9 @@ import android.util.Log;
 
 public class LogUtils {
 
-    private static boolean open = true; // 日志工具是否开启，默认为true
     private static String className; // 类名
     private static String methodName; // 方法名
     private static int lineNumber; // 所在行数
-
-    public static boolean isOpen() {
-        return open;
-    }
-
-    public static void setOpen(boolean open) {
-        LogUtils.open = open;
-    }
 
     /**
      * 获取方法名，类名，行数
@@ -57,9 +48,6 @@ public class LogUtils {
     }
 
     public static void v(Object msg) {
-        if (!open) {
-            return;
-        }
         msg = handleMsg(msg);
         getMethodName(new Throwable().getStackTrace());
         if (Log.isLoggable("Mms:transaction", Log.VERBOSE)) {
@@ -68,9 +56,6 @@ public class LogUtils {
     }
 
     public static void d(Object msg) {
-        if (!open) {
-            return;
-        }
         msg = handleMsg(msg);
         getMethodName(new Throwable().getStackTrace());
         if (Log.isLoggable("Mms:transaction", Log.DEBUG)) {
@@ -79,9 +64,6 @@ public class LogUtils {
     }
 
     public static void i(Object msg) {
-        if (!open) {
-            return;
-        }
         msg = handleMsg(msg);
         getMethodName(new Throwable().getStackTrace());
         if (Log.isLoggable("Mms:transaction", Log.INFO)) {
@@ -90,9 +72,6 @@ public class LogUtils {
     }
 
     public static void w(Object msg) {
-        if (!open) {
-            return;
-        }
         msg = handleMsg(msg);
         getMethodName(new Throwable().getStackTrace());
         if (Log.isLoggable("Mms:transaction", Log.WARN)) {
@@ -101,9 +80,6 @@ public class LogUtils {
     }
 
     public static void e(Object msg) {
-        if (!open) {
-            return;
-        }
         msg = handleMsg(msg);
         getMethodName(new Throwable().getStackTrace());
         if (Log.isLoggable("Mms:transaction", Log.ERROR)) {
