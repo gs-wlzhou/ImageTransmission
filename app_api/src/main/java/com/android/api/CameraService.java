@@ -21,7 +21,6 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.IBinder;
 import android.os.RemoteException;
-import android.util.Log;
 import android.view.Surface;
 import android.view.TextureView;
 import android.widget.Toast;
@@ -32,8 +31,6 @@ import androidx.annotation.Nullable;
 import java.util.Arrays;
 
 public class CameraService extends Service implements UsbDeviceReceiver.UsbDeviceChangeListener {
-
-    private static final String TAG = "wlzhou";
 
     private CameraManager cameraManager; //摄像头管理
     private CameraDevice.StateCallback deviceCallback; //摄像头监听
@@ -52,24 +49,24 @@ public class CameraService extends Service implements UsbDeviceReceiver.UsbDevic
     public AudioTrack mAudioTrack;
     private int recordBufferSize;
     private int trackBufferSize;
-    private boolean start;
+    private volatile boolean start;
 
     @Override
     public void onCreate() {
-        Log.d(TAG, "[onCreate]");
         super.onCreate();
+        LogUtils.d("onCreate");
         registerUsbDeviceReceiver();
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.d(TAG, "[onStartCommand]");
+        LogUtils.d("onStartCommand");
         return super.onStartCommand(intent, flags, startId);
     }
 
     @Override
     public void onDestroy() {
-        Log.d(TAG, "[onDestroy]");
+        LogUtils.d("onDestroy");
         super.onDestroy();
         unregisterUsbDeviceReceiver();
     }
@@ -77,14 +74,14 @@ public class CameraService extends Service implements UsbDeviceReceiver.UsbDevic
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
-        Log.d(TAG, "[CameraService] onBind");
+        LogUtils.d("CameraService onBind");
         CameraBinder cameraBinder = new CameraBinder();
         return cameraBinder;
     }
 
     @Override
     public boolean onUnbind(Intent intent) {
-        Log.d(TAG, "[CameraService] onUnbind");
+        LogUtils.d("CameraService onUnbind");
         return super.onUnbind(intent);
     }
 
@@ -156,7 +153,7 @@ public class CameraService extends Service implements UsbDeviceReceiver.UsbDevic
             @Override
             public void onError(@NonNull CameraDevice camera, int error) {
                 closeCamera();
-                Log.d(TAG, "[initData] open camera error");
+                LogUtils.e("open camera error");
                 Toast.makeText(CameraService.this, "open camera error", Toast.LENGTH_SHORT).show();
             }
         };
@@ -179,18 +176,18 @@ public class CameraService extends Service implements UsbDeviceReceiver.UsbDevic
     // 使用后置摄像头
     public void openCamera() {
         try {
-            String[] CameraIdList = cameraManager.getCameraIdList();
-            Log.d(TAG, "[openCamera] CameraIdList,length = " + CameraIdList.length);
+            String[] cameraIdList = cameraManager.getCameraIdList();
+            LogUtils.d("CameraIdList,length = " + cameraIdList.length);
             // 获取可用相机设备列表
-            CameraCharacteristics characteristics = cameraManager.getCameraCharacteristics(CameraIdList[0]);
+            CameraCharacteristics characteristics = cameraManager.getCameraCharacteristics(cameraIdList[0]);
             // 在这里可以通过CameraCharacteristics设置相机的功能,当然必须检查是否支持
             characteristics.get(CameraCharacteristics.INFO_SUPPORTED_HARDWARE_LEVEL);
-            String cameraId = CameraIdList[0]; // 得到后摄像头编号
-            Log.d(TAG, "[openCamera] cameraId = " + cameraId);
-            cameraManager.openCamera(CameraIdList[0], deviceCallback, cameraHandler);
+            String cameraId = cameraIdList[0]; // 得到后摄像头编号
+            LogUtils.d("cameraId = " + cameraId);
+            cameraManager.openCamera(cameraId, deviceCallback, cameraHandler);
         } catch (Exception e) {
             Toast.makeText(CameraService.this, "please connect usb camera", Toast.LENGTH_SHORT).show();
-            Log.e(TAG, "[openCamera] please connect usb camera");
+            LogUtils.e("please connect usb camera");
         }
     }
 
@@ -198,7 +195,7 @@ public class CameraService extends Service implements UsbDeviceReceiver.UsbDevic
     public void takePreview() {
         try {
             while (textureView == null) {
-                Log.d(TAG, "wait textureView create");
+                LogUtils.w("wait textureView create");
                 try {
                     Thread.sleep(100);
                 } catch (InterruptedException e) {
@@ -223,7 +220,7 @@ public class CameraService extends Service implements UsbDeviceReceiver.UsbDevic
                         cameraCaptureSession.setRepeatingRequest(captureRequest, captureCallback, cameraHandler);
                     } catch (CameraAccessException e) {
                         Toast.makeText(CameraService.this, "camera access exception", Toast.LENGTH_SHORT).show();
-                        Log.e(TAG, "camera access exception");
+                        LogUtils.e("camera access exception");
                     }
                 }
 
@@ -234,7 +231,7 @@ public class CameraService extends Service implements UsbDeviceReceiver.UsbDevic
             }, null);
         } catch (CameraAccessException e) {
             Toast.makeText(CameraService.this, "camera access exception", Toast.LENGTH_SHORT).show();
-            Log.e(TAG,"camera access exception");
+            LogUtils.e("camera access exception");
         }
     }
 
@@ -263,7 +260,7 @@ public class CameraService extends Service implements UsbDeviceReceiver.UsbDevic
     // 音频播放
     public void startPlay() {
         start = true;
-        Log.d(TAG, "[startPlay] -> yes");
+        LogUtils.d("start play -> ok");
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -272,11 +269,11 @@ public class CameraService extends Service implements UsbDeviceReceiver.UsbDevic
                 byte[] bytes = new byte[2048];
                 while (start) {
                     int len = mAudioRecord.read(bytes, 0, bytes.length);
-                    Log.d(TAG, "[mAudioRecord] read -> yes,len = " + len);
+                    LogUtils.v("mAudioRecord read,len = " + len);
                     byte[] temp = new byte[2048];
                     System.arraycopy(bytes, 0, temp, 0, len);
                     mAudioTrack.write(temp, 0, len);
-                    Log.d(TAG, "[mAudioTrack] write -> yes,len = " + len);
+                    LogUtils.v("mAudioTrack write,len = " + len);
                 }
                 mAudioRecord.stop();
                 mAudioRecord.release();
@@ -289,7 +286,7 @@ public class CameraService extends Service implements UsbDeviceReceiver.UsbDevic
     // 音频停止
     public void stopPlay() {
         start = false;
-        Log.d(TAG, "[stopPlay] -> yes");
+        LogUtils.d("stop play -> ok");
     }
 
     // 注册广播监听取消
@@ -300,7 +297,7 @@ public class CameraService extends Service implements UsbDeviceReceiver.UsbDevic
             intentFilter.addAction(UsbManager.ACTION_USB_DEVICE_DETACHED);
             usbDeviceReceiver = new UsbDeviceReceiver(CameraService.this);
             registerReceiver(usbDeviceReceiver, intentFilter);
-            Log.d(TAG, "[registerUsbDeviceReceiver]");
+            LogUtils.d("registerUsbDeviceReceiver");
         }
     }
 
@@ -308,7 +305,7 @@ public class CameraService extends Service implements UsbDeviceReceiver.UsbDevic
     public void unregisterUsbDeviceReceiver() {
         if (usbDeviceReceiver != null) {
             unregisterReceiver(usbDeviceReceiver);
-            Log.d(TAG, "[unregisterUsbDeviceReceiver]");
+            LogUtils.d("unregisterUsbDeviceReceiver");
         }
     }
 }

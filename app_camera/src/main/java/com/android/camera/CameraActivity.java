@@ -5,77 +5,61 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
-import android.content.ComponentName;
-import android.content.Intent;
-import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.graphics.SurfaceTexture;
 import android.os.Bundle;
-import android.os.IBinder;
-import android.os.RemoteException;
-import android.util.Log;
 import android.view.TextureView;
 import android.widget.Toast;
 
-import com.android.api.CameraService;
-import com.android.api.ICameraService;
+import com.android.api.LogUtils;
+import com.android.api.UsbCameraManager;
 
 public class CameraActivity extends AppCompatActivity {
 
-    private static final String TAG = "wlzhou";
     private static final String[] REQUIRED_PERMISSIONS = {Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO};
     private static final int REQUEST_PERMISSIONS_CODE = 1;
 
     private TextureView textureView;
 
-    private ICameraService cameraService;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d(TAG, "[onCreate]");
         super.onCreate(savedInstanceState);
+        LogUtils.d("onCreate");
         hideTitle();
         setContentView(R.layout.activity_camera);
-        initView();
+        init();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        Log.d(TAG, "[onStart]");
-        // 绑定服务
-        bindCameraService();
+        LogUtils.d("onStart");
+        initPermission();
     }
 
     @Override
     protected void onResume() {
-        Log.d(TAG, "[onResume]");
         super.onResume();
+        LogUtils.d("onResume");
     }
 
     @Override
     protected void onPause() {
-        Log.d(TAG, "[onPause]");
         super.onPause();
+        LogUtils.d("onPause");
     }
 
     @Override
     protected void onStop() {
-        Log.d(TAG, "[onStop]");
         super.onStop();
-        try {
-            cameraService.stopUsbCameraPreview();
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
-        // 解绑服务
-        unBindCameraService();
+        LogUtils.d("onStop");
+        UsbCameraManager.stopUsbCameraPreview();
     }
 
     @Override
     protected void onDestroy() {
-        Log.d(TAG, "[onDestroy]");
         super.onDestroy();
+        LogUtils.d("onDestroy");
     }
 
     // 设置窗口没有标题
@@ -91,30 +75,23 @@ public class CameraActivity extends AppCompatActivity {
         boolean flag = true;
         if (requestCode == REQUEST_PERMISSIONS_CODE) {
             for (int i = 0; i < grantResults.length; i++) {
-                if (grantResults[i] == -1) {
-                    flag = false;
-                    break;
+                if (grantResults[i] == PackageManager.PERMISSION_DENIED) {
+                    LogUtils.d("no permission");
+                    Toast.makeText(CameraActivity.this, "no permission", Toast.LENGTH_SHORT).show();
+                    return;
                 }
             }
         }
-        if (flag) {
-            try {
-                cameraService.startUsbCameraPreview();
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
-        } else {
-            Toast.makeText(CameraActivity.this, "no permission", Toast.LENGTH_SHORT).show();
-        }
+        UsbCameraManager.startUsbCameraPreview(CameraActivity.this);
     }
 
-    private void initView() {
+    private void init() {
         textureView = findViewById(R.id.tv);
         textureView.setSurfaceTextureListener(new TextureView.SurfaceTextureListener() {
             @Override
             public void onSurfaceTextureAvailable(@NonNull SurfaceTexture surfaceTexture, int i, int i1) {
-                Toast.makeText(CameraActivity.this, "created", Toast.LENGTH_SHORT).show();
-                CameraService.setTextureView(textureView);
+                LogUtils.d("texture view created");
+                UsbCameraManager.setTextureView(textureView);
             }
 
             @Override
@@ -134,6 +111,15 @@ public class CameraActivity extends AppCompatActivity {
         });
     }
 
+    private void initPermission() {
+        LogUtils.d("initPermission");
+        if (!hasPermissions()) {
+            requestPermissions(REQUIRED_PERMISSIONS, REQUEST_PERMISSIONS_CODE);
+        } else {
+            UsbCameraManager.startUsbCameraPreview(CameraActivity.this);
+        }
+    }
+
     private boolean hasPermissions() {
         for (String permission : REQUIRED_PERMISSIONS) {
             if (ContextCompat.checkSelfPermission(CameraActivity.this, permission) == PackageManager.PERMISSION_DENIED) {
@@ -142,41 +128,4 @@ public class CameraActivity extends AppCompatActivity {
         }
         return true;
     }
-
-    private void bindCameraService() {
-        Intent intent = new Intent(this, CameraService.class);
-        startService(intent);
-        boolean b = bindService(intent, cameraServiceConnection, BIND_AUTO_CREATE);
-        Log.d(TAG, "[bindCameraService] isBind -> " + b);
-    }
-
-    private void unBindCameraService() {
-        Intent intent = new Intent(this, CameraService.class);
-        unbindService(cameraServiceConnection);
-        stopService(intent);
-    }
-
-    private ServiceConnection cameraServiceConnection = new ServiceConnection() {
-        @Override
-        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
-            Log.d(TAG, "[onServiceConnected]");
-            cameraService = ICameraService.Stub.asInterface(iBinder);
-
-            if (!hasPermissions()) {
-                requestPermissions(REQUIRED_PERMISSIONS, REQUEST_PERMISSIONS_CODE);
-            } else {
-                try {
-                    cameraService.startUsbCameraPreview();
-                } catch (RemoteException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName componentName) {
-            Log.d(TAG, "onServiceDisconnected");
-            cameraService = null;
-        }
-    };
 }

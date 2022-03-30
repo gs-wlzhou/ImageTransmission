@@ -10,7 +10,7 @@ import android.widget.Toast;
 
 public class UsbDeviceReceiver extends BroadcastReceiver {
 
-    private static final String TAG = "wlzhou";
+    private static final String TAG = "UsbDeviceReceiver";
 
     private UsbDeviceChangeListener usbDeviceChangeListener;
 
