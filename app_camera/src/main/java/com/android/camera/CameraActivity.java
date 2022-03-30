@@ -53,6 +53,7 @@ public class CameraActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         LogUtils.d("onStop");
+        // 停止预览
         UsbCameraManager.stopUsbCameraPreview();
     }
 
@@ -82,6 +83,7 @@ public class CameraActivity extends AppCompatActivity {
                 }
             }
         }
+        // 开启预览
         UsbCameraManager.startUsbCameraPreview(CameraActivity.this);
     }
 
@@ -91,6 +93,7 @@ public class CameraActivity extends AppCompatActivity {
             @Override
             public void onSurfaceTextureAvailable(@NonNull SurfaceTexture surfaceTexture, int i, int i1) {
                 LogUtils.d("texture view created");
+                // 预览显示
                 UsbCameraManager.setTextureView(textureView);
             }
 
@@ -111,11 +114,13 @@ public class CameraActivity extends AppCompatActivity {
         });
     }
 
+    // 判断权限
     private void initPermission() {
         LogUtils.d("initPermission");
         if (!hasPermissions()) {
             requestPermissions(REQUIRED_PERMISSIONS, REQUEST_PERMISSIONS_CODE);
         } else {
+            // 开启预览
             UsbCameraManager.startUsbCameraPreview(CameraActivity.this);
         }
     }

@@ -16,15 +16,26 @@ public class UsbCameraManager {
 
     private UsbCameraManager() {}
 
+    /**
+     * 设置预览画面显示
+     * @param TextureView实例
+     */
     public static void setTextureView(TextureView tv) {
         CameraService.setTextureView(tv);
     }
 
+    /**
+     * 开启摄像头预览
+     * @param Activity实例
+     */
     public static void startUsbCameraPreview(Activity a) {
         activity = a;
         bindCameraService();
     }
 
+    /**
+     * 停止摄像头预览
+     */
     public static void stopUsbCameraPreview() {
         try {
             cameraService.stopUsbCameraPreview();
