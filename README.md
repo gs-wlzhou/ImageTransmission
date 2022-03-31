@@ -65,7 +65,7 @@ public class UsbCameraManager {
 <uses-permission android:name="android.permission.CAMERA"/>
 <uses-permission android:name="android.permission.RECORD_AUDIO"/>
 
-<service android:name="com.android.api.CameraService" android:exported="true"/>
+<service android:name="com.android.api.CameraService"/>
 ```
 
 + 布局文件添加 TextureView
