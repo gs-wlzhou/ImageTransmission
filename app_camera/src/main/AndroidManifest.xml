@@ -21,7 +21,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <service android:name="com.android.api.CameraService" android:exported="true"/>
+        <service android:name="com.android.api.CameraService"/>
     </application>
 
 </manifest>

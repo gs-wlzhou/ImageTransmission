@@ -13,12 +13,21 @@ public class UsbCameraManager {
 
     private static ICameraService cameraService;
     private static volatile Activity activity;
+    private static volatile CameraServiceCallback callback;
 
     private UsbCameraManager() {}
 
     /**
+     * 设置服务启动/停止回调
+     * @param c
+     */
+    public static void setCameraServiceCallback(CameraServiceCallback c) {
+        callback = c;
+    }
+
+    /**
      * 设置预览画面显示位置
-     * @param TextureView实例
+     * @param tv
      */
     public static void setTextureView(TextureView tv) {
         LogUtils.d("set texture view");
@@ -27,7 +36,7 @@ public class UsbCameraManager {
 
     /**
      * 开启摄像头预览
-     * @param Activity实例
+     * @param a
      */
     public static void startUsbCameraPreview(Activity a) {
         LogUtils.d("start usb camera preview");
@@ -56,6 +65,10 @@ public class UsbCameraManager {
         activity.startService(intent);
         boolean flag = activity.bindService(intent, cameraServiceConnection, Context.BIND_AUTO_CREATE);
         LogUtils.d("isBind -> " + flag);
+
+        if (flag && callback != null) {
+            callback.onServiceStart();
+        }
     }
 
     // 解绑服务
@@ -64,6 +77,10 @@ public class UsbCameraManager {
         Intent intent = new Intent(activity, CameraService.class);
         activity.unbindService(cameraServiceConnection);
         activity.stopService(intent);
+
+        if (callback != null) {
+            callback.onServiceStop();
+        }
     }
 
     private static ServiceConnection cameraServiceConnection = new ServiceConnection() {
@@ -94,4 +111,17 @@ public class UsbCameraManager {
             cameraService = null;
         }
     };
+
+    public interface CameraServiceCallback {
+
+        /**
+         * 服务启动
+         */
+        void onServiceStart();
+
+        /**
+         * 服务停止
+         */
+        void onServiceStop();
+    }
 }

@@ -24,6 +24,8 @@ public class CameraActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // 可选
+        UsbCameraManager.setCameraServiceCallback(callback);
         LogUtils.d("onCreate");
         hideTitle();
         setContentView(R.layout.activity_camera);
@@ -132,4 +134,16 @@ public class CameraActivity extends AppCompatActivity {
         }
         return true;
     }
+
+    private UsbCameraManager.CameraServiceCallback callback = new UsbCameraManager.CameraServiceCallback() {
+        @Override
+        public void onServiceStart() {
+            Toast.makeText(CameraActivity.this, "service start", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onServiceStop() {
+            Toast.makeText(CameraActivity.this, "service stop", Toast.LENGTH_SHORT).show();
+        }
+    };
 }
