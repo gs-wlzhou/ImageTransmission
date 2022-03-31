@@ -5,15 +5,17 @@ import android.util.Log;
 public class LogUtils {
 
     private static String className; // 类名
+    private static String fileName; // 文件名
     private static String methodName; // 方法名
     private static int lineNumber; // 所在行数
 
     /**
-     * 获取方法名，类名，行数
+     * 获取方法名,类名,行数,文件名
      * @param elements
      */
     private static void getMethodName(StackTraceElement[] elements) {
-        className = elements[1].getFileName();
+        className = elements[1].getClassName();
+        fileName = elements[1].getFileName();
         methodName = elements[1].getMethodName();
         lineNumber = elements[1].getLineNumber();
     }
@@ -26,7 +28,7 @@ public class LogUtils {
     private static String createMsg(String msg) {
         StringBuffer buffer = new StringBuffer();
         buffer.append(methodName);
-        buffer.append("(").append(className).append(":").append(lineNumber).append(")");
+        buffer.append("(").append(fileName).append(":").append(lineNumber).append(")=====");
         buffer.append(msg);
         return buffer.toString();
     }
@@ -47,6 +49,10 @@ public class LogUtils {
         return msg;
     }
 
+    /**
+     * 打印verbose日志
+     * @param msg
+     */
     public static void v(Object msg) {
         msg = handleMsg(msg);
         getMethodName(new Throwable().getStackTrace());
@@ -55,6 +61,10 @@ public class LogUtils {
         }
     }
 
+    /**
+     * 打印debug日志
+     * @param msg
+     */
     public static void d(Object msg) {
         msg = handleMsg(msg);
         getMethodName(new Throwable().getStackTrace());
@@ -63,6 +73,10 @@ public class LogUtils {
         }
     }
 
+    /**
+     * 打印info日志
+     * @param msg
+     */
     public static void i(Object msg) {
         msg = handleMsg(msg);
         getMethodName(new Throwable().getStackTrace());
@@ -71,6 +85,10 @@ public class LogUtils {
         }
     }
 
+    /**
+     * 打印warn日志
+     * @param msg
+     */
     public static void w(Object msg) {
         msg = handleMsg(msg);
         getMethodName(new Throwable().getStackTrace());
@@ -79,6 +97,10 @@ public class LogUtils {
         }
     }
 
+    /**
+     * 打印error日志
+     * @param msg
+     */
     public static void e(Object msg) {
         msg = handleMsg(msg);
         getMethodName(new Throwable().getStackTrace());

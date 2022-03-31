@@ -116,6 +116,7 @@ public class CameraService extends Service implements UsbDeviceReceiver.UsbDevic
         }
     }
 
+    // 设置预览画面显示
     public static void setTextureView(TextureView tv) {
         textureView = tv;
     }
