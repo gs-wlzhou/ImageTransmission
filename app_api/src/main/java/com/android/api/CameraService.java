@@ -116,11 +116,12 @@ public class CameraService extends Service implements UsbDeviceReceiver.UsbDevic
         }
     }
 
-    // 设置预览画面显示
+    // 设置预览画面显示位置
     public static void setTextureView(TextureView tv) {
         textureView = tv;
     }
 
+    // 数据初始化
     private void initData() {
         recordBufferSize = AudioRecord.getMinBufferSize(8000, AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_16BIT);
         mAudioRecord = new AudioRecord(MediaRecorder.AudioSource.MIC,
@@ -261,21 +262,21 @@ public class CameraService extends Service implements UsbDeviceReceiver.UsbDevic
     // 音频播放
     public void startPlay() {
         start = true;
-        LogUtils.d("start play -> ok");
+        LogUtils.d("set play start");
         new Thread(new Runnable() {
             @Override
             public void run() {
                 mAudioRecord.startRecording();
                 mAudioTrack.play();
                 byte[] bytes = new byte[2048];
+                LogUtils.d("record,track -> start");
                 while (start) {
                     int len = mAudioRecord.read(bytes, 0, bytes.length);
-                    LogUtils.v("mAudioRecord read,len = " + len);
                     byte[] temp = new byte[2048];
                     System.arraycopy(bytes, 0, temp, 0, len);
                     mAudioTrack.write(temp, 0, len);
-                    LogUtils.v("mAudioTrack write,len = " + len);
                 }
+                LogUtils.d("record,track -> stop");
                 mAudioRecord.stop();
                 mAudioRecord.release();
                 mAudioTrack.stop();
@@ -287,7 +288,7 @@ public class CameraService extends Service implements UsbDeviceReceiver.UsbDevic
     // 音频停止
     public void stopPlay() {
         start = false;
-        LogUtils.d("stop play -> ok");
+        LogUtils.d("set play stop");
     }
 
     // 注册广播监听取消

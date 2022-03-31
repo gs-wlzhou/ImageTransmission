@@ -17,7 +17,7 @@ public class UsbCameraManager {
     private UsbCameraManager() {}
 
     /**
-     * 设置预览画面显示
+     * 设置预览画面显示位置
      * @param TextureView实例
      */
     public static void setTextureView(TextureView tv) {
@@ -49,6 +49,7 @@ public class UsbCameraManager {
         unBindCameraService();
     }
 
+    // 绑定服务
     private static void bindCameraService() {
         LogUtils.d("bind camera service");
         Intent intent = new Intent(activity, CameraService.class);
@@ -57,6 +58,7 @@ public class UsbCameraManager {
         LogUtils.d("isBind -> " + flag);
     }
 
+    // 解绑服务
     private static void unBindCameraService() {
         LogUtils.d("unBind camera service");
         Intent intent = new Intent(activity, CameraService.class);
@@ -70,6 +72,7 @@ public class UsbCameraManager {
             LogUtils.d("onServiceConnected");
             cameraService = ICameraService.Stub.asInterface(iBinder);
 
+            // 开启摄像头预览
             try {
                 cameraService.startUsbCameraPreview();
             } catch (RemoteException e) {
@@ -81,6 +84,7 @@ public class UsbCameraManager {
         public void onServiceDisconnected(ComponentName componentName) {
             LogUtils.d("onServiceDisconnected");
 
+            // 停止摄像头预览
             try {
                 cameraService.stopUsbCameraPreview();
             } catch (RemoteException e) {
