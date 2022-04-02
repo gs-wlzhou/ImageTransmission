@@ -4,6 +4,7 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.SurfaceTexture;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCaptureSession;
 import android.hardware.camera2.CameraCharacteristics;
@@ -50,6 +51,9 @@ public class CameraService extends Service implements UsbDeviceReceiver.UsbDevic
     private int recordBufferSize;
     private int trackBufferSize;
     private volatile boolean start;
+
+    private final int width = 1920;
+    private final int height = 1080;
 
     @Override
     public void onCreate() {
@@ -205,6 +209,8 @@ public class CameraService extends Service implements UsbDeviceReceiver.UsbDevic
                 }
             }
             textureView.setScaleX(-1f);
+            SurfaceTexture surfaceTexture = textureView.getSurfaceTexture();
+            surfaceTexture.setDefaultBufferSize(width, height);
             Surface surface = new Surface(textureView.getSurfaceTexture());
             CaptureRequest.Builder previewRequestBuilder = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
             // 将预览数据传递
