@@ -213,7 +213,7 @@ public class CameraService extends Service implements UsbDeviceReceiver.UsbDevic
             textureView.setScaleX(-1f);
             SurfaceTexture surfaceTexture = textureView.getSurfaceTexture();
             surfaceTexture.setDefaultBufferSize(width, height);
-            Surface surface = new Surface(textureView.getSurfaceTexture());
+            Surface surface = new Surface(surfaceTexture);
             CaptureRequest.Builder previewRequestBuilder = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
             // 将预览数据传递
             previewRequestBuilder.addTarget(surface);
