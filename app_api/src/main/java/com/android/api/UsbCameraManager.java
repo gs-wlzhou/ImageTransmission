@@ -8,15 +8,22 @@ import android.content.ServiceConnection;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.view.TextureView;
+import android.widget.RelativeLayout;
 
 public class UsbCameraManager {
 
     private static ICameraService cameraService;
     private static volatile Activity activity;
+    private static volatile TextureView textureView;
     private static volatile CameraServiceCallback callback;
 
     // 服务开启状态
     private static volatile boolean status = false;
+
+    // 预览尺寸
+    private static boolean isSmallSize;
+    private static int[] smallSize = {960, 540};
+    private static int[] largeSize = {1920, 1080};
 
     private UsbCameraManager() {}
 
@@ -33,6 +40,7 @@ public class UsbCameraManager {
      * @param tv
      */
     public static void setTextureView(TextureView tv) {
+        textureView = tv;
         LogUtils.d("set texture view");
         CameraService.setTextureView(tv);
     }
@@ -67,6 +75,23 @@ public class UsbCameraManager {
 
         unBindCameraService();
         status = false;
+    }
+
+    /**
+     * 预览尺寸切换
+     */
+    public static void previewSizeChange() {
+        int[] curSize = null;
+        if (isSmallSize) {
+            isSmallSize = false;
+            curSize = largeSize;
+        } else {
+            isSmallSize = true;
+            curSize = smallSize;
+        }
+        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(curSize[0], curSize[1]);
+        layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT);
+        textureView.setLayoutParams(layoutParams);
     }
 
     // 绑定服务

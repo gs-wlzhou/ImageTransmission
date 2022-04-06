@@ -15,22 +15,21 @@
         android:id="@+id/start"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/temp"
+        android:layout_above="@+id/change"
         android:text="开始"/>
 
     <Button
-        android:id="@+id/temp"
+        android:id="@+id/change"
         android:layout_centerVertical="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="invisible"
-        android:text=""/>
+        android:text="改变"/>
 
     <Button
         android:id="@+id/stop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/temp"
+        android:layout_below="@+id/change"
         android:text="停止"/>
 
 </RelativeLayout>

@@ -11,6 +11,8 @@ import android.os.Bundle;
 import android.view.TextureView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.android.api.LogUtils;
@@ -24,6 +26,7 @@ public class CameraActivity extends AppCompatActivity {
     private TextureView textureView;
     private Button startBtn;
     private Button stopBtn;
+    private Button changeBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,6 +134,14 @@ public class CameraActivity extends AppCompatActivity {
             public void onClick(View view) {
                 // 停止预览
                 UsbCameraManager.stopUsbCameraPreview();
+            }
+        });
+        changeBtn = findViewById(R.id.change);
+        changeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // 预览尺寸切换
+                UsbCameraManager.previewSizeChange();
             }
         });
     }
