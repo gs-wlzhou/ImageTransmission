@@ -15,6 +15,9 @@ public class UsbCameraManager {
     private static volatile Activity activity;
     private static volatile CameraServiceCallback callback;
 
+    // 服务开启状态
+    private static volatile boolean status = false;
+
     private UsbCameraManager() {}
 
     /**
@@ -39,15 +42,22 @@ public class UsbCameraManager {
      * @param a
      */
     public static void startUsbCameraPreview(Activity a) {
+        if (status) {
+            stopUsbCameraPreview();
+        }
         LogUtils.d("start usb camera preview");
         activity = a;
         bindCameraService();
+        status = true;
     }
 
     /**
      * 停止摄像头预览
      */
     public static void stopUsbCameraPreview() {
+        if (!status) {
+            return;
+        }
         LogUtils.d("stop usb camera preview");
         try {
             cameraService.stopUsbCameraPreview();
@@ -56,6 +66,7 @@ public class UsbCameraManager {
         }
 
         unBindCameraService();
+        status = false;
     }
 
     // 绑定服务

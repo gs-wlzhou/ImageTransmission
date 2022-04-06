@@ -9,6 +9,8 @@ import android.content.pm.PackageManager;
 import android.graphics.SurfaceTexture;
 import android.os.Bundle;
 import android.view.TextureView;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.android.api.LogUtils;
@@ -16,10 +18,12 @@ import com.android.api.UsbCameraManager;
 
 public class CameraActivity extends AppCompatActivity {
 
-    private static final String[] REQUIRED_PERMISSIONS = {Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO};
-    private static final int REQUEST_PERMISSIONS_CODE = 1;
+    /*private static final String[] REQUIRED_PERMISSIONS = {Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO};
+    private static final int REQUEST_PERMISSIONS_CODE = 1;*/
 
     private TextureView textureView;
+    private Button startBtn;
+    private Button stopBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +40,7 @@ public class CameraActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         LogUtils.d("onStart");
-        initPermission();
+//        initPermission();
     }
 
     @Override
@@ -72,7 +76,7 @@ public class CameraActivity extends AppCompatActivity {
         }
     }
 
-    @Override
+    /*@Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == REQUEST_PERMISSIONS_CODE) {
@@ -86,7 +90,7 @@ public class CameraActivity extends AppCompatActivity {
         }
         // 开启预览
         UsbCameraManager.startUsbCameraPreview(CameraActivity.this);
-    }
+    }*/
 
     private void initView() {
         textureView = findViewById(R.id.tv);
@@ -113,10 +117,26 @@ public class CameraActivity extends AppCompatActivity {
 
             }
         });
+        startBtn = findViewById(R.id.start);
+        startBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // 开启预览
+                UsbCameraManager.startUsbCameraPreview(CameraActivity.this);
+            }
+        });
+        stopBtn = findViewById(R.id.stop);
+        stopBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // 停止预览
+                UsbCameraManager.stopUsbCameraPreview();
+            }
+        });
     }
 
     // 判断权限
-    private void initPermission() {
+    /*private void initPermission() {
         LogUtils.d("initPermission");
         if (!hasPermissions()) {
             requestPermissions(REQUIRED_PERMISSIONS, REQUEST_PERMISSIONS_CODE);
@@ -124,16 +144,16 @@ public class CameraActivity extends AppCompatActivity {
             // 开启预览
             UsbCameraManager.startUsbCameraPreview(CameraActivity.this);
         }
-    }
+    }*/
 
-    private boolean hasPermissions() {
+    /*private boolean hasPermissions() {
         for (String permission : REQUIRED_PERMISSIONS) {
             if (ContextCompat.checkSelfPermission(CameraActivity.this, permission) == PackageManager.PERMISSION_DENIED) {
                 return false;
             }
         }
         return true;
-    }
+    }*/
 
     private UsbCameraManager.CameraServiceCallback callback = new UsbCameraManager.CameraServiceCallback() {
         @Override
