@@ -2,26 +2,17 @@ package com.android.camera;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
-
-import android.Manifest;
-import android.content.pm.PackageManager;
 import android.graphics.SurfaceTexture;
 import android.os.Bundle;
 import android.view.TextureView;
 import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.android.api.LogUtils;
 import com.android.api.UsbCameraManager;
 
 public class CameraActivity extends AppCompatActivity {
-
-    /*private static final String[] REQUIRED_PERMISSIONS = {Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO};
-    private static final int REQUEST_PERMISSIONS_CODE = 1;*/
 
     private TextureView textureView;
     private Button startBtn;
@@ -43,7 +34,6 @@ public class CameraActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         LogUtils.d("onStart");
-//        initPermission();
     }
 
     @Override
@@ -78,22 +68,6 @@ public class CameraActivity extends AppCompatActivity {
             getSupportActionBar().hide();
         }
     }
-
-    /*@Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == REQUEST_PERMISSIONS_CODE) {
-            for (int i = 0; i < grantResults.length; i++) {
-                if (grantResults[i] == PackageManager.PERMISSION_DENIED) {
-                    LogUtils.d("no permission");
-                    Toast.makeText(CameraActivity.this, "no permission", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-            }
-        }
-        // 开启预览
-        UsbCameraManager.startUsbCameraPreview(CameraActivity.this);
-    }*/
 
     private void initView() {
         textureView = findViewById(R.id.tv);
@@ -145,26 +119,6 @@ public class CameraActivity extends AppCompatActivity {
             }
         });
     }
-
-    // 判断权限
-    /*private void initPermission() {
-        LogUtils.d("initPermission");
-        if (!hasPermissions()) {
-            requestPermissions(REQUIRED_PERMISSIONS, REQUEST_PERMISSIONS_CODE);
-        } else {
-            // 开启预览
-            UsbCameraManager.startUsbCameraPreview(CameraActivity.this);
-        }
-    }*/
-
-    /*private boolean hasPermissions() {
-        for (String permission : REQUIRED_PERMISSIONS) {
-            if (ContextCompat.checkSelfPermission(CameraActivity.this, permission) == PackageManager.PERMISSION_DENIED) {
-                return false;
-            }
-        }
-        return true;
-    }*/
 
     private UsbCameraManager.CameraServiceCallback callback = new UsbCameraManager.CameraServiceCallback() {
         @Override
