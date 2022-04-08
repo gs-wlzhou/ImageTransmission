@@ -7,29 +7,29 @@
 
     <TextureView
         android:id="@+id/tv"
-        android:layout_centerInParent="true"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true" />
 
     <Button
         android:id="@+id/start"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/change"
-        android:text="开始"/>
+        android:text="开始" />
 
     <Button
         android:id="@+id/change"
-        android:layout_centerVertical="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="改变"/>
+        android:layout_centerVertical="true"
+        android:text="改变" />
 
     <Button
         android:id="@+id/stop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/change"
-        android:text="停止"/>
+        android:text="停止" />
 
 </RelativeLayout>

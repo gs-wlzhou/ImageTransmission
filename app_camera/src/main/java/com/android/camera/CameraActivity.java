@@ -1,18 +1,20 @@
 package com.android.camera;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
+
+import android.app.Activity;
 import android.graphics.SurfaceTexture;
 import android.os.Bundle;
 import android.view.TextureView;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.Toast;
 
 import com.android.api.LogUtils;
 import com.android.api.UsbCameraManager;
 
-public class CameraActivity extends AppCompatActivity {
+public class CameraActivity extends Activity {
 
     private TextureView textureView;
     private Button startBtn;
@@ -22,10 +24,10 @@ public class CameraActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        LogUtils.d("onCreate");
+        requestWindowFeature(Window.FEATURE_NO_TITLE); // 设置窗口没有标题
         // 可选
         UsbCameraManager.setCameraServiceCallback(callback);
-        LogUtils.d("onCreate");
-        hideTitle();
         setContentView(R.layout.activity_camera);
         initView();
     }
@@ -60,13 +62,6 @@ public class CameraActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         LogUtils.d("onDestroy");
-    }
-
-    // 设置窗口没有标题
-    private void hideTitle() {
-        if (getSupportActionBar() != null){
-            getSupportActionBar().hide();
-        }
     }
 
     private void initView() {

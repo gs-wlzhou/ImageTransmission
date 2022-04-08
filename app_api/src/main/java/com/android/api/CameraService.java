@@ -60,7 +60,7 @@ public class CameraService extends Service implements UsbDeviceReceiver.UsbDevic
         super.onCreate();
         LogUtils.d("onCreate");
         // 注册usb设备监听
-        // registerUsbDeviceReceiver();
+        registerUsbDeviceReceiver();
     }
 
     @Override
@@ -74,7 +74,7 @@ public class CameraService extends Service implements UsbDeviceReceiver.UsbDevic
         super.onDestroy();
         LogUtils.d("onDestroy");
         // 取消usb设备监听
-        // unregisterUsbDeviceReceiver();
+        unregisterUsbDeviceReceiver();
     }
 
     @Nullable

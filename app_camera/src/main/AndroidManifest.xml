@@ -14,10 +14,10 @@
         android:theme="@style/Theme.ImageTransmission">
         <activity
             android:name=".CameraActivity"
-            android:exported="true">
+            android:exported="true"
+            android:theme="@android:style/Theme.Translucent">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

@@ -21,7 +21,7 @@ public class UsbCameraManager {
     private static volatile boolean status = false;
 
     // 预览尺寸
-    private static boolean isSmallSize;
+    private static boolean isSmallSize = true;
     private static int[] smallSize = {960, 540};
     private static int[] largeSize = {1920, 1080};
 
@@ -41,6 +41,7 @@ public class UsbCameraManager {
      */
     public static void setTextureView(TextureView tv) {
         textureView = tv;
+        setPreviewSize(smallSize);
         LogUtils.d("set texture view");
         CameraService.setTextureView(tv);
     }
@@ -81,17 +82,23 @@ public class UsbCameraManager {
      * 预览尺寸切换
      */
     public static void previewSizeChange() {
-        int[] curSize = null;
         if (isSmallSize) {
             isSmallSize = false;
-            curSize = largeSize;
+            setPreviewSize(largeSize);
+            LogUtils.d("set large size");
         } else {
             isSmallSize = true;
-            curSize = smallSize;
+            setPreviewSize(smallSize);
+            LogUtils.d("set small size");
         }
-        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(curSize[0], curSize[1]);
+    }
+
+    // 设置预览尺寸
+    private static void setPreviewSize(int[] size) {
+        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(size[0], size[1]);
         layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT);
         textureView.setLayoutParams(layoutParams);
+        LogUtils.d("preview size change");
     }
 
     // 绑定服务
