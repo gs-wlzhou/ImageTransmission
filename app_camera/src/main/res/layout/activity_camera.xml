@@ -3,13 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".CameraActivity">
 
-    <TextureView
-        android:id="@+id/tv"
+    <jp.co.cyberagent.android.gpuimage.GPUImageView
+        android:id="@+id/iv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_centerInParent="true" />
+        android:layout_centerInParent="true"/>
 
     <Button
         android:id="@+id/start"

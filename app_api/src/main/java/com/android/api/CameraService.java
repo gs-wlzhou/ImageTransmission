@@ -4,7 +4,7 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.SurfaceTexture;
+import android.graphics.ImageFormat;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCaptureSession;
 import android.hardware.camera2.CameraCharacteristics;
@@ -17,19 +17,22 @@ import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioRecord;
 import android.media.AudioTrack;
+import android.media.Image;
+import android.media.ImageReader;
 import android.media.MediaRecorder;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.IBinder;
 import android.os.RemoteException;
-import android.view.Surface;
-import android.view.TextureView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.util.Arrays;
+
+import jp.co.cyberagent.android.gpuimage.GPUImageView;
+import jp.co.cyberagent.android.gpuimage.filter.GPUImageSharpenFilter;
 
 public class CameraService extends Service implements UsbDeviceReceiver.UsbDeviceChangeListener {
 
@@ -41,8 +44,10 @@ public class CameraService extends Service implements UsbDeviceReceiver.UsbDevic
 
     private HandlerThread handlerThread;
     private Handler cameraHandler; // 后台处理图片传输帧
+    private ImageReader imageReader;
 
-    private static volatile TextureView textureView;
+    private static volatile GPUImageView gpuImageView;
+    private static GPUImageFilterTools.FilterAdjuster filterAdjuster;
 
     private UsbDeviceReceiver usbDeviceReceiver;
 
@@ -54,6 +59,8 @@ public class CameraService extends Service implements UsbDeviceReceiver.UsbDevic
 
     private final int width = 1920;
     private final int height = 1080;
+
+    private static boolean isImageSharpen = false;
 
     @Override
     public void onCreate() {
@@ -93,15 +100,15 @@ public class CameraService extends Service implements UsbDeviceReceiver.UsbDevic
 
     @Override
     public void onUsbDeviceAttached(UsbDevice device) {
-        initData();
         initHandler();
+        initData();
         openCamera();
     }
 
     @Override
     public void onUsbDeviceDetached(UsbDevice device) {
-        closeCamera();
         destroyHandler();
+        closeCamera();
         stopPlay();
     }
 
@@ -109,22 +116,28 @@ public class CameraService extends Service implements UsbDeviceReceiver.UsbDevic
 
         @Override
         public void startUsbCameraPreview() throws RemoteException {
-            initData();
             initHandler();
+            initData();
             openCamera();
         }
 
         @Override
         public void stopUsbCameraPreview() throws RemoteException {
-            closeCamera();
             destroyHandler();
+            closeCamera();
             stopPlay();
         }
     }
 
     // 设置预览画面显示位置
-    public static void setTextureView(TextureView tv) {
-        textureView = tv;
+    public static void setGpuImageView(GPUImageView iv) {
+        gpuImageView = iv;
+        gpuImageView.setRenderMode(GPUImageView.RENDERMODE_CONTINUOUSLY);
+    }
+
+    // 设置图像是否锐化
+    public static void setImageSharpen(boolean flag) {
+        isImageSharpen = flag;
     }
 
     // 数据初始化
@@ -172,6 +185,30 @@ public class CameraService extends Service implements UsbDeviceReceiver.UsbDevic
                 super.onCaptureStarted(session, request, timestamp, frameNumber);
             }
         };
+
+        imageReader = ImageReader.newInstance(width, height, ImageFormat.YUV_420_888,2);
+        imageReader.setOnImageAvailableListener(reader -> {
+            try {
+                cameraHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Image image = reader.acquireLatestImage();
+                        if (image == null) {
+                            return;
+                        }
+                        byte[] bytes = ImageUtils.generateNV21Data(image);
+                        gpuImageView.updatePreviewFrame(bytes, width, height);
+                        image.close();
+                    }
+                });
+            } catch (Exception e) {
+                LogUtils.e("sending message to a Handler on a dead thread");
+            }
+        }, cameraHandler);
+
+        if (isImageSharpen) {
+            imageSharpen();
+        }
     }
 
     // 为摄像头开一个线程
@@ -202,26 +239,14 @@ public class CameraService extends Service implements UsbDeviceReceiver.UsbDevic
     // 开启预览
     public void takePreview() {
         try {
-            while (textureView == null) {
-                LogUtils.w("wait textureView create");
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-            textureView.setScaleX(-1f);
-            SurfaceTexture surfaceTexture = textureView.getSurfaceTexture();
-            surfaceTexture.setDefaultBufferSize(width, height);
-            Surface surface = new Surface(surfaceTexture);
             CaptureRequest.Builder previewRequestBuilder = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
             // 将预览数据传递
-            previewRequestBuilder.addTarget(surface);
+            previewRequestBuilder.addTarget(imageReader.getSurface());
             // 自动对焦
             previewRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE);
             // 打开闪光灯
             previewRequestBuilder.set(CaptureRequest.CONTROL_AE_MODE, CaptureRequest.CONTROL_AE_MODE_ON_AUTO_FLASH);
-            cameraDevice.createCaptureSession(Arrays.asList(surface), new CameraCaptureSession.StateCallback() {
+            cameraDevice.createCaptureSession(Arrays.asList(imageReader.getSurface()), new CameraCaptureSession.StateCallback() {
                 @Override
                 public void onConfigured(@NonNull CameraCaptureSession session) {
                     cameraCaptureSession = session;
@@ -317,5 +342,15 @@ public class CameraService extends Service implements UsbDeviceReceiver.UsbDevic
             unregisterReceiver(usbDeviceReceiver);
             LogUtils.d("unregisterUsbDeviceReceiver");
         }
+    }
+
+    // 图像锐化
+    public void imageSharpen()  {
+        GPUImageSharpenFilter sharpenFilter = new GPUImageSharpenFilter();
+        sharpenFilter.setSharpness(2.0f);
+        gpuImageView.setFilter(sharpenFilter);
+        filterAdjuster = new GPUImageFilterTools.FilterAdjuster(sharpenFilter);
+        filterAdjuster.adjust(47);
+        gpuImageView.requestRender();
     }
 }

@@ -7,14 +7,15 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
 import android.os.RemoteException;
-import android.view.TextureView;
 import android.widget.RelativeLayout;
+
+import jp.co.cyberagent.android.gpuimage.GPUImageView;
 
 public class UsbCameraManager {
 
     private static ICameraService cameraService;
     private static volatile Activity activity;
-    private static volatile TextureView textureView;
+    private static volatile GPUImageView imageView;
     private static volatile CameraServiceCallback callback;
 
     // 服务开启状态
@@ -28,27 +29,22 @@ public class UsbCameraManager {
     private UsbCameraManager() {}
 
     /**
-     * 设置服务启动/停止回调
-     * @param c
+     * 初始化配置
+     * @param gpuImageView 预览画面显示位置
+     * @param isImageSharpen 图像锐化
+     * @param cameraServiceCallback 服务启动/停止回调
      */
-    public static void setCameraServiceCallback(CameraServiceCallback c) {
-        callback = c;
-    }
-
-    /**
-     * 设置预览画面显示位置
-     * @param tv
-     */
-    public static void setTextureView(TextureView tv) {
-        textureView = tv;
+    public static void initConfig(GPUImageView gpuImageView, boolean isImageSharpen, CameraServiceCallback cameraServiceCallback) {
+        CameraService.setGpuImageView(gpuImageView);
+        CameraService.setImageSharpen(isImageSharpen);
+        imageView = gpuImageView;
+        callback = cameraServiceCallback;
         setPreviewSize(smallSize);
-        LogUtils.d("set texture view");
-        CameraService.setTextureView(tv);
     }
 
     /**
      * 开启摄像头预览
-     * @param a
+     * @param a Activity上下文
      */
     public static void startUsbCameraPreview(Activity a) {
         if (status) {
@@ -97,7 +93,7 @@ public class UsbCameraManager {
     private static void setPreviewSize(int[] size) {
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(size[0], size[1]);
         layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT);
-        textureView.setLayoutParams(layoutParams);
+        imageView.setLayoutParams(layoutParams);
         LogUtils.d("preview size change");
     }
 
