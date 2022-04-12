@@ -63,7 +63,7 @@ public class CameraActivity extends Activity {
         }
     };
 
-    private UsbCameraManager.CameraServiceCallback callback = new UsbCameraManager.CameraServiceCallback() {
+    private UsbCameraManager.CameraServiceCallback callback = new UsbCameraManager.CameraServiceCallback() { // 服务启动/停止回调
         @Override
         public void onServiceStart() {
             Toast.makeText(CameraActivity.this, "service start", Toast.LENGTH_SHORT).show();
