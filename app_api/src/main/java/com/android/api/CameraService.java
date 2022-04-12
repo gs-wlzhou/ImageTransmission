@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.ImageFormat;
+import android.graphics.SurfaceTexture;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCaptureSession;
 import android.hardware.camera2.CameraCharacteristics;
@@ -24,6 +25,9 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.IBinder;
 import android.os.RemoteException;
+import android.view.Surface;
+import android.view.TextureView;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -46,7 +50,9 @@ public class CameraService extends Service implements UsbDeviceReceiver.UsbDevic
     private Handler cameraHandler; // 后台处理图片传输帧
     private ImageReader imageReader;
 
+    private static volatile View previewView;
     private static volatile GPUImageView gpuImageView;
+    private static volatile TextureView textureView;
     private static GPUImageFilterTools.FilterAdjuster filterAdjuster;
 
     private UsbDeviceReceiver usbDeviceReceiver;
@@ -59,8 +65,6 @@ public class CameraService extends Service implements UsbDeviceReceiver.UsbDevic
 
     private final int width = 1920;
     private final int height = 1080;
-
-    private static boolean isImageSharpen = false;
 
     @Override
     public void onCreate() {
@@ -130,14 +134,16 @@ public class CameraService extends Service implements UsbDeviceReceiver.UsbDevic
     }
 
     // 设置预览画面显示位置
-    public static void setGpuImageView(GPUImageView iv) {
-        gpuImageView = iv;
-        gpuImageView.setRenderMode(GPUImageView.RENDERMODE_CONTINUOUSLY);
-    }
-
-    // 设置图像是否锐化
-    public static void setImageSharpen(boolean flag) {
-        isImageSharpen = flag;
+    public static void setPreviewView(View view) {
+        previewView = view;
+        String className = previewView.getClass().getSimpleName();
+        if (className.equals("GPUImageView")) {
+            gpuImageView = (GPUImageView) view;
+            gpuImageView.setRenderMode(GPUImageView.RENDERMODE_CONTINUOUSLY);
+            imageSharpen();
+        } else if (className.equals("TextureView")) {
+            textureView = (TextureView) view;
+        }
     }
 
     // 数据初始化
@@ -162,7 +168,17 @@ public class CameraService extends Service implements UsbDeviceReceiver.UsbDevic
             @Override
             public void onOpened(@NonNull CameraDevice camera) {
                 cameraDevice = camera;
-                takePreview();
+                String className = previewView.getClass().getSimpleName();
+                if (className.equals("GPUImageView")) {
+                    Surface surface = imageReader.getSurface();
+                    takePreview(surface);
+                } else if (className.equals("TextureView")) {
+                    textureView.setScaleX(-1f);
+                    SurfaceTexture surfaceTexture = textureView.getSurfaceTexture();
+                    surfaceTexture.setDefaultBufferSize(width, height);
+                    Surface surface = new Surface(surfaceTexture);
+                    takePreview(surface);
+                }
                 startPlay();
             }
 
@@ -205,10 +221,6 @@ public class CameraService extends Service implements UsbDeviceReceiver.UsbDevic
                 LogUtils.e("sending message to a Handler on a dead thread");
             }
         }, cameraHandler);
-
-        if (isImageSharpen) {
-            imageSharpen();
-        }
     }
 
     // 为摄像头开一个线程
@@ -237,16 +249,16 @@ public class CameraService extends Service implements UsbDeviceReceiver.UsbDevic
     }
 
     // 开启预览
-    public void takePreview() {
+    public void takePreview(Surface surface) {
         try {
             CaptureRequest.Builder previewRequestBuilder = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
             // 将预览数据传递
-            previewRequestBuilder.addTarget(imageReader.getSurface());
+            previewRequestBuilder.addTarget(surface);
             // 自动对焦
             previewRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE);
             // 打开闪光灯
             previewRequestBuilder.set(CaptureRequest.CONTROL_AE_MODE, CaptureRequest.CONTROL_AE_MODE_ON_AUTO_FLASH);
-            cameraDevice.createCaptureSession(Arrays.asList(imageReader.getSurface()), new CameraCaptureSession.StateCallback() {
+            cameraDevice.createCaptureSession(Arrays.asList(surface), new CameraCaptureSession.StateCallback() {
                 @Override
                 public void onConfigured(@NonNull CameraCaptureSession session) {
                     cameraCaptureSession = session;
@@ -293,7 +305,7 @@ public class CameraService extends Service implements UsbDeviceReceiver.UsbDevic
     }
 
     // 音频播放
-    public void startPlay() {
+    private void startPlay() {
         start = true;
         LogUtils.d("set play start");
         new Thread(new Runnable() {
@@ -319,13 +331,13 @@ public class CameraService extends Service implements UsbDeviceReceiver.UsbDevic
     }
 
     // 音频停止
-    public void stopPlay() {
+    private void stopPlay() {
         start = false;
         LogUtils.d("set play stop");
     }
 
     // 注册广播监听取消
-    public void registerUsbDeviceReceiver() {
+    private void registerUsbDeviceReceiver() {
         if (usbDeviceReceiver == null) {
             IntentFilter intentFilter = new IntentFilter();
             intentFilter.addAction(UsbManager.ACTION_USB_DEVICE_ATTACHED);
@@ -337,7 +349,7 @@ public class CameraService extends Service implements UsbDeviceReceiver.UsbDevic
     }
 
     // 取消广播监听
-    public void unregisterUsbDeviceReceiver() {
+    private void unregisterUsbDeviceReceiver() {
         if (usbDeviceReceiver != null) {
             unregisterReceiver(usbDeviceReceiver);
             LogUtils.d("unregisterUsbDeviceReceiver");
@@ -345,7 +357,7 @@ public class CameraService extends Service implements UsbDeviceReceiver.UsbDevic
     }
 
     // 图像锐化
-    public void imageSharpen()  {
+    private static void imageSharpen()  {
         GPUImageSharpenFilter sharpenFilter = new GPUImageSharpenFilter();
         sharpenFilter.setSharpness(2.0f);
         gpuImageView.setFilter(sharpenFilter);

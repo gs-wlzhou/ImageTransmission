@@ -12,28 +12,32 @@ import com.android.api.UsbCameraManager;
 
 import jp.co.cyberagent.android.gpuimage.GPUImageView;
 
-public class CameraActivity extends Activity {
+public class CameraActivity02 extends Activity {
 
     private GPUImageView gpuImageView;
     private Button startBtn;
     private Button stopBtn;
     private Button changeBtn;
+    private UsbCameraManager usbCameraManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         LogUtils.d("onCreate");
         requestWindowFeature(Window.FEATURE_NO_TITLE); // 设置窗口没有标题
-        setContentView(R.layout.activity_camera);
+        setContentView(R.layout.activity_camera02);
         initView();
-        UsbCameraManager.initConfig(gpuImageView, true, callback); // 初始化配置
+        usbCameraManager = new UsbCameraManager.Builder()
+                .previewView(gpuImageView)
+                .cameraServiceCallback(callback)
+                .activity(CameraActivity02.this).build();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
         LogUtils.d("onStop");
-        UsbCameraManager.stopUsbCameraPreview(); // 停止预览
+        usbCameraManager.stopUsbCameraPreview(); // 停止预览
     }
 
     private void initView() {
@@ -51,13 +55,13 @@ public class CameraActivity extends Activity {
         public void onClick(View view) {
             switch (view.getId()) {
                 case R.id.start:
-                    UsbCameraManager.startUsbCameraPreview(CameraActivity.this); // 开启预览
+                    usbCameraManager.startUsbCameraPreview(); // 开启预览
                     break;
                 case R.id.stop:
-                    UsbCameraManager.stopUsbCameraPreview(); // 停止预览
+                    usbCameraManager.stopUsbCameraPreview(); // 停止预览
                     break;
                 case R.id.change:
-                    UsbCameraManager.previewSizeChange(); // 预览尺寸切换
+                    usbCameraManager.previewSizeChange(); // 预览尺寸切换
                     break;
             }
         }
@@ -66,12 +70,12 @@ public class CameraActivity extends Activity {
     private UsbCameraManager.CameraServiceCallback callback = new UsbCameraManager.CameraServiceCallback() { // 服务启动/停止回调
         @Override
         public void onServiceStart() {
-            Toast.makeText(CameraActivity.this, "service start", Toast.LENGTH_SHORT).show();
+            Toast.makeText(CameraActivity02.this, "service start", Toast.LENGTH_SHORT).show();
         }
 
         @Override
         public void onServiceStop() {
-            Toast.makeText(CameraActivity.this, "service stop", Toast.LENGTH_SHORT).show();
+            Toast.makeText(CameraActivity02.this, "service stop", Toast.LENGTH_SHORT).show();
         }
     };
 }
