@@ -33,4 +33,14 @@
         android:layout_below="@+id/change"
         android:text="停止" />
 
+    <SeekBar
+        android:id="@+id/seekbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_alignParentBottom="true"
+        android:background="#55ffffff"
+        android:max="100"
+        android:padding="10dp" />
+
 </RelativeLayout>

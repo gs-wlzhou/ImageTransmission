@@ -26,6 +26,7 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.IBinder;
 import android.os.RemoteException;
+import android.util.Range;
 import android.view.Surface;
 import android.view.TextureView;
 import android.view.View;
@@ -68,8 +69,11 @@ public class CameraService extends Service implements UsbDeviceReceiver.UsbDevic
     private int trackBufferSize;
     private volatile boolean start;
 
-    private final int width = 1920;
-    private final int height = 1080;
+    private static int width;
+    private static int height;
+
+    private Range<Integer> fpsRange = new Range<>(30, 30); // 预览画面帧率
+    private static int sleepTime; // 帧率输出间隔时间
 
     @Override
     public void onCreate() {
@@ -151,6 +155,28 @@ public class CameraService extends Service implements UsbDeviceReceiver.UsbDevic
         }
     }
 
+    // 设置显示分辨率
+    public static void setResolution(String resolution) {
+        if ("1080".equals(resolution)) {
+            width = 1920;
+            height = 1080;
+        } else if ("720".equals(resolution)) {
+            width = 1280;
+            height = 720;
+        }
+    }
+
+    // 设置帧率输出间隔时间
+    public static void setFrameRate(String frameRate) {
+        if ("low".equals(frameRate)) {
+            sleepTime = 50;
+        } else if ("medium".equals(frameRate)) {
+            sleepTime = 40;
+        } else if ("high".equals(frameRate)) {
+            sleepTime = 30;
+        }
+    }
+
     // 数据初始化
     @SuppressLint("MissingPermission")
     private void initData() {
@@ -221,6 +247,11 @@ public class CameraService extends Service implements UsbDeviceReceiver.UsbDevic
                         byte[] bytes = ImageUtils.generateNV21Data(image);
                         gpuImageView.updatePreviewFrame(bytes, width, height);
                         image.close();
+                        try {
+                            Thread.sleep(sleepTime); // 每帧画面间隔指定时间刷新
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
                     }
                 });
             } catch (Exception e) {
@@ -264,6 +295,8 @@ public class CameraService extends Service implements UsbDeviceReceiver.UsbDevic
             previewRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE);
             // 打开闪光灯
             previewRequestBuilder.set(CaptureRequest.CONTROL_AE_MODE, CaptureRequest.CONTROL_AE_MODE_ON_AUTO_FLASH);
+            // 设置预览画面的帧率
+            previewRequestBuilder.set(CaptureRequest.CONTROL_AE_TARGET_FPS_RANGE, fpsRange);
             cameraDevice.createCaptureSession(Arrays.asList(surface), new CameraCaptureSession.StateCallback() {
                 @Override
                 public void onConfigured(@NonNull CameraCaptureSession session) {
@@ -369,6 +402,12 @@ public class CameraService extends Service implements UsbDeviceReceiver.UsbDevic
         gpuImageView.setFilter(sharpenFilter);
         filterAdjuster = new GPUImageFilterTools.FilterAdjuster(sharpenFilter);
         filterAdjuster.adjust(47);
+        gpuImageView.requestRender();
+    }
+
+    // 调整锐化值
+    public static void sharpenChange(Integer progress) {
+        filterAdjuster.adjust(progress);
         gpuImageView.requestRender();
     }
 }

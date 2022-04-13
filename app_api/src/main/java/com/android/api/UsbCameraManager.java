@@ -29,6 +29,8 @@ public class UsbCameraManager {
 
     public UsbCameraManager(Builder builder) {
         CameraService.setPreviewView(builder.previewView);
+        CameraService.setResolution(builder.resolution);
+        CameraService.setFrameRate(builder.frameRate);
         previewView = builder.previewView;
         callback = builder.cameraServiceCallback;
         activity = builder.activity;
@@ -78,6 +80,11 @@ public class UsbCameraManager {
             setPreviewSize(smallSize);
             LogUtils.d("set small size");
         }
+    }
+
+    // 调整锐化值
+    public void sharpenChange(Integer progress) {
+        CameraService.sharpenChange(progress);
     }
 
     // 设置预览尺寸
@@ -160,6 +167,8 @@ public class UsbCameraManager {
         private View previewView; // 预览画面显示位置
         private CameraServiceCallback cameraServiceCallback; // 服务启动|停止回调
         private Activity activity; // 上下文对象
+        private String resolution = "720"; // 分辨率
+        private String frameRate = "medium"; // 输出帧率
 
         public Builder() {}
 
@@ -175,6 +184,16 @@ public class UsbCameraManager {
 
         public Builder activity(Activity activity) {
             this.activity = activity;
+            return this;
+        }
+
+        public Builder resolution(String resolution) {
+            this.resolution = resolution;
+            return this;
+        }
+
+        public Builder frameRate(String frameRate) {
+            this.frameRate = frameRate;
             return this;
         }
 

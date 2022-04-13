@@ -88,6 +88,7 @@
     public void startUsbCameraPreview();
     public void stopUsbCameraPreview();
     public void previewSizeChange();
+    public void sharpenChange(java.lang.Integer);
 }
 #不混淆某个类的内部类
 -keep class com.android.api.UsbCameraManager$*{*;}
