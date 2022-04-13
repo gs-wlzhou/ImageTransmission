@@ -1,4 +1,4 @@
-package com.android.api;
+package com.android.api.utils;
 
 import android.graphics.ImageFormat;
 import android.graphics.Rect;

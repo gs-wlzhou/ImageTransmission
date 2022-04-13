@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbManager;
 
+import com.android.api.utils.LogUtils;
+
 public class UsbDeviceReceiver extends BroadcastReceiver {
 
     private UsbDeviceChangeListener usbDeviceChangeListener;

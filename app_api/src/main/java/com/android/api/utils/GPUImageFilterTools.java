@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.api;
+package com.android.api.utils;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -22,6 +22,8 @@ import android.content.DialogInterface;
 import android.graphics.BitmapFactory;
 import android.graphics.PointF;
 import android.opengl.Matrix;
+
+import com.android.api.R;
 
 import java.util.LinkedList;
 import java.util.List;

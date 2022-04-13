@@ -7,7 +7,6 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.android.api.LogUtils;
 import com.android.api.UsbCameraManager;
 
 import jp.co.cyberagent.android.gpuimage.GPUImageView;
@@ -23,7 +22,6 @@ public class CameraActivity02 extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        LogUtils.d("onCreate");
         requestWindowFeature(Window.FEATURE_NO_TITLE); // 设置窗口没有标题
         setContentView(R.layout.activity_camera02);
         initView();
@@ -36,7 +34,6 @@ public class CameraActivity02 extends Activity {
     @Override
     protected void onStop() {
         super.onStop();
-        LogUtils.d("onStop");
         usbCameraManager.stopUsbCameraPreview(); // 停止预览
     }
 

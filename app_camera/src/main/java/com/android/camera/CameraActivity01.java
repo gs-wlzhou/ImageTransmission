@@ -11,7 +11,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
-import com.android.api.LogUtils;
+import com.android.api.CameraService;
 import com.android.api.UsbCameraManager;
 
 public class CameraActivity01 extends Activity {
@@ -25,7 +25,6 @@ public class CameraActivity01 extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        LogUtils.d("onCreate");
         requestWindowFeature(Window.FEATURE_NO_TITLE); // 设置窗口没有标题
         setContentView(R.layout.activity_camera01);
         initView();
@@ -34,7 +33,6 @@ public class CameraActivity01 extends Activity {
     @Override
     protected void onStop() {
         super.onStop();
-        LogUtils.d("onStop");
         usbCameraManager.stopUsbCameraPreview(); // 停止预览
     }
 
@@ -89,7 +87,7 @@ public class CameraActivity01 extends Activity {
         }
     };
 
-    private UsbCameraManager.CameraServiceCallback callback = new UsbCameraManager.CameraServiceCallback() { // 服务启动/停止回调
+    private UsbCameraManager.CameraServiceCallback callback = new UsbCameraManager.CameraServiceCallback() { // 服务启动|停止回调
         @Override
         public void onServiceStart() {
             Toast.makeText(CameraActivity01.this, "service start", Toast.LENGTH_SHORT).show();

@@ -10,6 +10,8 @@ import android.os.RemoteException;
 import android.view.View;
 import android.widget.RelativeLayout;
 
+import com.android.api.utils.LogUtils;
+
 public class UsbCameraManager {
 
     private ICameraService cameraService;

@@ -1,5 +1,6 @@
 package com.android.api;
 
+import android.annotation.SuppressLint;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -32,6 +33,10 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.android.api.utils.GPUImageFilterTools;
+import com.android.api.utils.ImageUtils;
+import com.android.api.utils.LogUtils;
 
 import java.util.Arrays;
 
@@ -147,6 +152,7 @@ public class CameraService extends Service implements UsbDeviceReceiver.UsbDevic
     }
 
     // 数据初始化
+    @SuppressLint("MissingPermission")
     private void initData() {
         recordBufferSize = AudioRecord.getMinBufferSize(8000, AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_16BIT);
         mAudioRecord = new AudioRecord(MediaRecorder.AudioSource.MIC,
