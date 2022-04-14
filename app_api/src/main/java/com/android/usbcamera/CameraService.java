@@ -234,7 +234,7 @@ public class CameraService extends Service implements UsbDeviceReceiver.UsbDevic
             }
         };
 
-        imageReader = ImageReader.newInstance(width, height, ImageFormat.YUV_420_888,2);
+        imageReader = ImageReader.newInstance(width, height, ImageFormat.YUV_420_888, 1);
         imageReader.setOnImageAvailableListener(reader -> {
             try {
                 cameraHandler.post(new Runnable() {
