@@ -32,6 +32,7 @@ public class CameraActivity02 extends Activity {
                 .previewView(gpuImageView) // 设置预览视图
                 .cameraServiceCallback(callback) // 设置服务状态回调
                 .activity(CameraActivity02.this) // 设置当前activity上下文
+                .tag("cameratest02") // 设置日志tag
                 .build();
     }
 

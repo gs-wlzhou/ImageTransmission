@@ -31,6 +31,7 @@ public class UsbCameraManager {
         CameraService.setPreviewView(builder.previewView);
         CameraService.setResolution(builder.resolution);
         CameraService.setFrameRate(builder.frameRate);
+        LogUtils.setTAG(builder.tag);
         previewView = builder.previewView;
         callback = builder.cameraServiceCallback;
         activity = builder.activity;
@@ -149,6 +150,9 @@ public class UsbCameraManager {
         }
     };
 
+    /**
+     * 服务状态回调接口
+     */
     public interface CameraServiceCallback {
 
         /**
@@ -162,6 +166,9 @@ public class UsbCameraManager {
         void onServiceStop();
     }
 
+    /**
+     * Usb摄像头管理构造器
+     */
     public static class Builder {
 
         private View previewView; // 预览画面显示位置
@@ -169,6 +176,7 @@ public class UsbCameraManager {
         private Activity activity; // 上下文对象
         private String resolution = UsbCameraConstant.RESOLUTION_720; // 分辨率
         private String frameRate = UsbCameraConstant.FRAME_RATE_LOW; // 输出帧率
+        private String tag = "UsbCameraSdk"; // 日志tag
 
         public Builder() {}
 
@@ -194,6 +202,11 @@ public class UsbCameraManager {
 
         public Builder frameRate(String frameRate) {
             this.frameRate = frameRate;
+            return this;
+        }
+
+        public Builder tag(String tag) {
+            this.tag = tag;
             return this;
         }
 

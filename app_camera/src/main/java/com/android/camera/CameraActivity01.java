@@ -52,6 +52,7 @@ public class CameraActivity01 extends Activity {
                         .previewView(textureView) // 设置预览视图
                         .cameraServiceCallback(callback) // 设置服务状态回调
                         .activity(CameraActivity01.this) // 设置当前activity上下文
+                        .tag("cameratest01") // 设置日志tag
                         .build();
             }
 

@@ -5,10 +5,18 @@ import android.util.Log;
 
 public class LogUtils {
 
-    private static final String TAG = "UsbCameraSdk";
+    private static String TAG; // tag标签
     private static String className; // 类名
     private static String methodName; // 方法名
     private static int lineNumber; // 所在行数
+
+    /**
+     * 设置tag标签
+     * @param tag
+     */
+    public static void setTAG(String tag) {
+        TAG = tag;
+    }
 
     /**
      * 获取方法名,类名,行数
