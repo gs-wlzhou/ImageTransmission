@@ -167,8 +167,8 @@ public class UsbCameraManager {
         private View previewView; // 预览画面显示位置
         private CameraServiceCallback cameraServiceCallback; // 服务启动|停止回调
         private Activity activity; // 上下文对象
-        private String resolution = "720"; // 分辨率
-        private String frameRate = "medium"; // 输出帧率
+        private String resolution = UsbCameraConstant.RESOLUTION_720; // 分辨率
+        private String frameRate = UsbCameraConstant.FRAME_RATE_LOW; // 输出帧率
 
         public Builder() {}
 

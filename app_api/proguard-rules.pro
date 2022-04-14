@@ -80,6 +80,8 @@
 #保护泛型
 -keepattributes Signature
 
+# 不混淆某个类（使用者可以看到全部信息）
+-keep class com.android.api.UsbCameraConstant {*;}
 # 不混淆某个类（使用者可以看到类名）
 -keep class com.android.api.CameraService
 -keep class com.android.api.UsbCameraManager

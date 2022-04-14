@@ -12,6 +12,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.android.api.CameraService;
+import com.android.api.UsbCameraConstant;
 import com.android.api.UsbCameraManager;
 
 public class CameraActivity01 extends Activity {
@@ -48,7 +49,7 @@ public class CameraActivity01 extends Activity {
             @Override
             public void onSurfaceTextureAvailable(@NonNull SurfaceTexture surfaceTexture, int i, int i1) {
                 usbCameraManager = new UsbCameraManager.Builder()
-                        .resolution("1080")
+                        .resolution(UsbCameraConstant.RESOLUTION_720)
                         .previewView(textureView)
                         .cameraServiceCallback(callback)
                         .activity(CameraActivity01.this).build();

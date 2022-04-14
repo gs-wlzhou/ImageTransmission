@@ -157,10 +157,10 @@ public class CameraService extends Service implements UsbDeviceReceiver.UsbDevic
 
     // 设置显示分辨率
     public static void setResolution(String resolution) {
-        if ("1080".equals(resolution)) {
+        if (UsbCameraConstant.RESOLUTION_1080.equals(resolution)) {
             width = 1920;
             height = 1080;
-        } else if ("720".equals(resolution)) {
+        } else if (UsbCameraConstant.RESOLUTION_720.equals(resolution)) {
             width = 1280;
             height = 720;
         }
@@ -168,11 +168,11 @@ public class CameraService extends Service implements UsbDeviceReceiver.UsbDevic
 
     // 设置帧率输出间隔时间
     public static void setFrameRate(String frameRate) {
-        if ("low".equals(frameRate)) {
+        if (UsbCameraConstant.FRAME_RATE_LOW.equals(frameRate)) {
             sleepTime = 50;
-        } else if ("medium".equals(frameRate)) {
+        } else if (UsbCameraConstant.FRAME_RATE_MEDIUM.equals(frameRate)) {
             sleepTime = 40;
-        } else if ("high".equals(frameRate)) {
+        } else if (UsbCameraConstant.FRAME_RATE_HIGH.equals(frameRate)) {
             sleepTime = 30;
         }
     }

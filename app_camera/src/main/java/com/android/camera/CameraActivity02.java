@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.Toast;
 
+import com.android.api.UsbCameraConstant;
 import com.android.api.UsbCameraManager;
 
 import jp.co.cyberagent.android.gpuimage.GPUImageView;
@@ -28,8 +29,8 @@ public class CameraActivity02 extends Activity {
         setContentView(R.layout.activity_camera02);
         initView();
         usbCameraManager = new UsbCameraManager.Builder()
-                .resolution("1080")
-                .frameRate("low")
+                .resolution(UsbCameraConstant.RESOLUTION_720)
+                .frameRate(UsbCameraConstant.FRAME_RATE_LOW)
                 .previewView(gpuImageView)
                 .cameraServiceCallback(callback)
                 .activity(CameraActivity02.this).build();
