@@ -13,6 +13,8 @@
         <entry key="app_camera/src/main/res/layout/activity_camera02.xml" value="0.16894630192502533" />
         <entry key="app_camera/src/main/res/layout/activity_camera_gpuimageview.xml" value="0.34739583333333335" />
         <entry key="app_camera/src/main/res/layout/activity_textureview.xml" value="0.1" />
+        <entry key="app_camera/src/main/res/layout/preview_gpuimageview.xml" value="0.34739583333333335" />
+        <entry key="app_camera/src/main/res/layout/preview_textureview.xml" value="0.34739583333333335" />
         <entry key="app_host/src/main/res/layout/activity_host.xml" value="0.34739583333333335" />
       </map>
     </option>

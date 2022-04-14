@@ -1,20 +1,22 @@
 package com.android.camera;
 
 import android.app.Activity;
+import android.graphics.SurfaceTexture;
 import android.os.Bundle;
+import android.view.TextureView;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+
 import com.android.usbcamera.UsbCameraConstant;
 import com.android.usbcamera.UsbCameraManager;
 
-import jp.co.cyberagent.android.gpuimage.GPUImageView;
+public class TextureViewPreview extends Activity {
 
-public class CameraActivity02 extends Activity {
-
-    private GPUImageView gpuImageView;
+    private TextureView textureView;
     private Button startBtn;
     private Button stopBtn;
     private Button changeBtn;
@@ -24,16 +26,8 @@ public class CameraActivity02 extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE); // 设置窗口没有标题
-        setContentView(R.layout.activity_camera02);
+        setContentView(R.layout.preview_textureview);
         initView();
-        usbCameraManager = new UsbCameraManager.Builder()
-                .resolution(UsbCameraConstant.RESOLUTION_720) // 设置分辨率
-                .frameRate(UsbCameraConstant.FRAME_RATE_LOW) // 设置帧率
-                .previewView(gpuImageView) // 设置预览视图
-                .cameraServiceCallback(callback) // 设置服务状态回调
-                .activity(CameraActivity02.this) // 设置当前activity上下文
-                .tag("cameratest02") // 设置日志tag
-                .build();
     }
 
     @Override
@@ -43,13 +37,40 @@ public class CameraActivity02 extends Activity {
     }
 
     private void initView() {
-        gpuImageView = findViewById(R.id.iv);
         startBtn = findViewById(R.id.start);
         stopBtn = findViewById(R.id.stop);
         changeBtn = findViewById(R.id.change);
         startBtn.setOnClickListener(onClickListener);
         stopBtn.setOnClickListener(onClickListener);
         changeBtn.setOnClickListener(onClickListener);
+        textureView = findViewById(R.id.tv);
+        textureView.setSurfaceTextureListener(new TextureView.SurfaceTextureListener() {
+            @Override
+            public void onSurfaceTextureAvailable(@NonNull SurfaceTexture surfaceTexture, int i, int i1) {
+                usbCameraManager = new UsbCameraManager.Builder()
+                        .previewView(textureView) // 设置预览视图
+                        .activity(TextureViewPreview.this) // 设置当前activity上下文
+                        .resolution(UsbCameraConstant.RESOLUTION_720) // 设置分辨率
+                        .cameraServiceCallback(callback) // 设置服务状态回调
+                        .tag("tag01") // 设置日志tag
+                        .build();
+            }
+
+            @Override
+            public void onSurfaceTextureSizeChanged(@NonNull SurfaceTexture surfaceTexture, int i, int i1) {
+
+            }
+
+            @Override
+            public boolean onSurfaceTextureDestroyed(@NonNull SurfaceTexture surfaceTexture) {
+                return false;
+            }
+
+            @Override
+            public void onSurfaceTextureUpdated(@NonNull SurfaceTexture surfaceTexture) {
+
+            }
+        });
     }
 
     private View.OnClickListener onClickListener = new View.OnClickListener() {
@@ -69,15 +90,15 @@ public class CameraActivity02 extends Activity {
         }
     };
 
-    private UsbCameraManager.CameraServiceCallback callback = new UsbCameraManager.CameraServiceCallback() { // 服务启动/停止回调
+    private UsbCameraManager.CameraServiceCallback callback = new UsbCameraManager.CameraServiceCallback() { // 服务启动|停止回调
         @Override
         public void onServiceStart() {
-            Toast.makeText(CameraActivity02.this, "service start", Toast.LENGTH_SHORT).show();
+            Toast.makeText(TextureViewPreview.this, "service start", Toast.LENGTH_SHORT).show();
         }
 
         @Override
         public void onServiceStop() {
-            Toast.makeText(CameraActivity02.this, "service stop", Toast.LENGTH_SHORT).show();
+            Toast.makeText(TextureViewPreview.this, "service stop", Toast.LENGTH_SHORT).show();
         }
     };
 }
