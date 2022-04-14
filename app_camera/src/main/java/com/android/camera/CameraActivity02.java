@@ -5,11 +5,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
-import android.widget.SeekBar;
 import android.widget.Toast;
 
-import com.android.api.UsbCameraConstant;
-import com.android.api.UsbCameraManager;
+import com.android.usbcamera.UsbCameraConstant;
+import com.android.usbcamera.UsbCameraManager;
 
 import jp.co.cyberagent.android.gpuimage.GPUImageView;
 
@@ -19,7 +18,6 @@ public class CameraActivity02 extends Activity {
     private Button startBtn;
     private Button stopBtn;
     private Button changeBtn;
-    private SeekBar seekBar;
     private UsbCameraManager usbCameraManager;
 
     @Override
@@ -29,11 +27,12 @@ public class CameraActivity02 extends Activity {
         setContentView(R.layout.activity_camera02);
         initView();
         usbCameraManager = new UsbCameraManager.Builder()
-                .resolution(UsbCameraConstant.RESOLUTION_720)
-                .frameRate(UsbCameraConstant.FRAME_RATE_LOW)
-                .previewView(gpuImageView)
-                .cameraServiceCallback(callback)
-                .activity(CameraActivity02.this).build();
+                .resolution(UsbCameraConstant.RESOLUTION_720) // 设置分辨率
+                .frameRate(UsbCameraConstant.FRAME_RATE_LOW) // 设置帧率
+                .previewView(gpuImageView) // 设置预览视图
+                .cameraServiceCallback(callback) // 设置服务状态回调
+                .activity(CameraActivity02.this) // 设置当前activity上下文
+                .build();
     }
 
     @Override
@@ -47,26 +46,9 @@ public class CameraActivity02 extends Activity {
         startBtn = findViewById(R.id.start);
         stopBtn = findViewById(R.id.stop);
         changeBtn = findViewById(R.id.change);
-        seekBar = findViewById(R.id.seekbar);
         startBtn.setOnClickListener(onClickListener);
         stopBtn.setOnClickListener(onClickListener);
         changeBtn.setOnClickListener(onClickListener);
-        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                usbCameraManager.sharpenChange(i); // 调整锐化值
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });
     }
 
     private View.OnClickListener onClickListener = new View.OnClickListener() {

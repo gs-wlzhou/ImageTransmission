@@ -1,4 +1,4 @@
-package com.android.api;
+package com.android.usbcamera;
 
 import android.annotation.SuppressLint;
 import android.app.Service;
@@ -35,9 +35,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.android.api.utils.GPUImageFilterTools;
-import com.android.api.utils.ImageUtils;
-import com.android.api.utils.LogUtils;
+import com.android.usbcamera.utils.GPUImageFilterTools;
+import com.android.usbcamera.utils.ImageUtils;
+import com.android.usbcamera.utils.LogUtils;
 
 import java.util.Arrays;
 

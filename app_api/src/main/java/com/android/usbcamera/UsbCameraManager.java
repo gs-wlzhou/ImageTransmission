@@ -1,4 +1,4 @@
-package com.android.api;
+package com.android.usbcamera;
 
 import android.app.Activity;
 import android.content.ComponentName;
@@ -10,7 +10,7 @@ import android.os.RemoteException;
 import android.view.View;
 import android.widget.RelativeLayout;
 
-import com.android.api.utils.LogUtils;
+import com.android.usbcamera.utils.LogUtils;
 
 public class UsbCameraManager {
 

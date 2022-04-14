@@ -1,4 +1,4 @@
-package com.android.api.utils;
+package com.android.usbcamera.utils;
 
 import android.graphics.ImageFormat;
 import android.graphics.Rect;

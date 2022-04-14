@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.api.utils;
+package com.android.usbcamera.utils;
 
 import android.app.AlertDialog;
 import android.content.Context;

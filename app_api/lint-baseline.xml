@@ -7,89 +7,9 @@
         errorLine1="            cameraManager.openCamera(cameraId, deviceCallback, cameraHandler);"
         errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/android/api/CameraService.java"
-            line="246"
+            file="src/main/java/com/android/usbcamera/CameraService.java"
+            line="281"
             column="13"/>
-    </issue>
-
-    <issue
-        id="LogTagMismatch"
-        message="Mismatched tags: the `v()` and `isLoggable()` calls typically should pass the same tag: `&quot;Mms:transaction&quot;` versus `className`"
-        errorLine1="            Log.v(className, createMsg(msg.toString()));"
-        errorLine2="                  ~~~~~~~~~">
-        <location
-            file="src/main/java/com/android/api/LogUtils.java"
-            line="60"
-            column="19"/>
-        <location
-            file="src/main/java/com/android/api/LogUtils.java"
-            line="59"
-            column="28"
-            message="Conflicting tag"/>
-    </issue>
-
-    <issue
-        id="LogTagMismatch"
-        message="Mismatched tags: the `d()` and `isLoggable()` calls typically should pass the same tag: `&quot;Mms:transaction&quot;` versus `className`"
-        errorLine1="            Log.d(className, createMsg(msg.toString()));"
-        errorLine2="                  ~~~~~~~~~">
-        <location
-            file="src/main/java/com/android/api/LogUtils.java"
-            line="72"
-            column="19"/>
-        <location
-            file="src/main/java/com/android/api/LogUtils.java"
-            line="71"
-            column="28"
-            message="Conflicting tag"/>
-    </issue>
-
-    <issue
-        id="LogTagMismatch"
-        message="Mismatched tags: the `i()` and `isLoggable()` calls typically should pass the same tag: `&quot;Mms:transaction&quot;` versus `className`"
-        errorLine1="            Log.i(className, createMsg(msg.toString()));"
-        errorLine2="                  ~~~~~~~~~">
-        <location
-            file="src/main/java/com/android/api/LogUtils.java"
-            line="84"
-            column="19"/>
-        <location
-            file="src/main/java/com/android/api/LogUtils.java"
-            line="83"
-            column="28"
-            message="Conflicting tag"/>
-    </issue>
-
-    <issue
-        id="LogTagMismatch"
-        message="Mismatched tags: the `w()` and `isLoggable()` calls typically should pass the same tag: `&quot;Mms:transaction&quot;` versus `className`"
-        errorLine1="            Log.w(className, createMsg(msg.toString()));"
-        errorLine2="                  ~~~~~~~~~">
-        <location
-            file="src/main/java/com/android/api/LogUtils.java"
-            line="96"
-            column="19"/>
-        <location
-            file="src/main/java/com/android/api/LogUtils.java"
-            line="95"
-            column="28"
-            message="Conflicting tag"/>
-    </issue>
-
-    <issue
-        id="LogTagMismatch"
-        message="Mismatched tags: the `e()` and `isLoggable()` calls typically should pass the same tag: `&quot;Mms:transaction&quot;` versus `className`"
-        errorLine1="            Log.e(className, createMsg(msg.toString()));"
-        errorLine2="                  ~~~~~~~~~">
-        <location
-            file="src/main/java/com/android/api/LogUtils.java"
-            line="108"
-            column="19"/>
-        <location
-            file="src/main/java/com/android/api/LogUtils.java"
-            line="107"
-            column="28"
-            message="Conflicting tag"/>
     </issue>
 
     <issue
@@ -98,8 +18,8 @@
         errorLine1="    private static volatile View previewView;"
         errorLine2="            ~~~~~~">
         <location
-            file="src/main/java/com/android/api/CameraService.java"
-            line="54"
+            file="src/main/java/com/android/usbcamera/CameraService.java"
+            line="59"
             column="13"/>
     </issue>
 
@@ -109,8 +29,8 @@
         errorLine1="    private static volatile GPUImageView gpuImageView;"
         errorLine2="            ~~~~~~">
         <location
-            file="src/main/java/com/android/api/CameraService.java"
-            line="55"
+            file="src/main/java/com/android/usbcamera/CameraService.java"
+            line="60"
             column="13"/>
     </issue>
 
@@ -120,8 +40,8 @@
         errorLine1="    private static volatile TextureView textureView;"
         errorLine2="            ~~~~~~">
         <location
-            file="src/main/java/com/android/api/CameraService.java"
-            line="56"
+            file="src/main/java/com/android/usbcamera/CameraService.java"
+            line="61"
             column="13"/>
     </issue>
 

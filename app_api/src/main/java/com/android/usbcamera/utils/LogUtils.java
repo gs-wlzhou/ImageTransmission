@@ -1,4 +1,4 @@
-package com.android.api.utils;
+package com.android.usbcamera.utils;
 
 import android.annotation.SuppressLint;
 import android.util.Log;

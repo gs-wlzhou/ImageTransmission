@@ -1,4 +1,4 @@
-package com.android.api;
+package com.android.usbcamera;
 
 public class UsbCameraConstant {
 
