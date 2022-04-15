@@ -226,7 +226,7 @@ public class UsbCameraManager {
         }
 
         /**
-         * 设置分辨率
+         * 设置分辨率,默认"720"
          * “720”低分辨率,“1080”高分辨率
          * @param resolution
          * @return Builder
@@ -237,7 +237,7 @@ public class UsbCameraManager {
         }
 
         /**
-         * 设置输出帧率(GPUImageView预览才设置)
+         * 设置输出帧率,默认"low"(GPUImageView预览才设置)
          * “low”低帧率,“medium”中帧率,“high”高帧率;
          * @param frameRate
          * @return Builder
@@ -248,7 +248,7 @@ public class UsbCameraManager {
         }
 
         /**
-         * 设置日志tag
+         * 设置日志tag,默认"confcameracontrol"
          * @param tag
          * @return Builder
          */
