@@ -9,6 +9,7 @@ import android.os.IBinder;
 import android.os.RemoteException;
 import android.view.TextureView;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import com.android.usbcamera.utils.LogUtils;
@@ -93,8 +94,9 @@ public class UsbCameraManager {
 
     // 设置预览尺寸
     private void setPreviewSize(int[] size) {
-        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(size[0], size[1]);
-        layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT);
+        ViewGroup.LayoutParams layoutParams = previewView.getLayoutParams();
+        layoutParams.width = size[0];
+        layoutParams.height = size[1];
         previewView.setLayoutParams(layoutParams);
         LogUtils.d("preview size change");
     }
