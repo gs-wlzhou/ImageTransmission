@@ -13,7 +13,6 @@ public class UsbCameraConfig {
     private Activity activity;
     private String resolution;
     private String previewSize;
-    private String tag;
 
     private UsbCameraConfig(Builder builder) {
         previewView = builder.previewView;
@@ -21,7 +20,6 @@ public class UsbCameraConfig {
         activity = builder.activity;
         resolution = builder.resolution;
         previewSize = builder.previewSize;
-        tag = builder.tag;
     }
 
     public View getPreviewView() {
@@ -44,18 +42,13 @@ public class UsbCameraConfig {
         return previewSize;
     }
 
-    public String getTag() {
-        return tag;
-    }
-
     public static class Builder {
 
         private View previewView; // 预览画面显示位置
         private UsbCameraManager.CameraServiceCallback cameraServiceCallback; // 服务启动/停止状态回调
         private Activity activity; // 上下文对象
-        private String resolution = UsbCameraConstant.RESOLUTION_720; // 分辨率
+        private String resolution = UsbCameraConstant.RESOLUTION_1080; // 分辨率
         private String previewSize = UsbCameraConstant.SIZE_SMALL; // 预览尺寸
-        private String tag = "confcameracontrol"; // 日志tag
 
         public Builder() {}
 
@@ -118,16 +111,6 @@ public class UsbCameraConfig {
          */
         public Builder setPreviewSize(String previewSize) {
             this.previewSize = previewSize;
-            return this;
-        }
-
-        /**
-         * 设置日志tag,默认"confcameracontrol"
-         * @param tag
-         * @return Builder
-         */
-        public Builder setTag(String tag) {
-            this.tag = tag;
             return this;
         }
 

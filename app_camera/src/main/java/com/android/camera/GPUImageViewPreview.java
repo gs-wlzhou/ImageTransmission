@@ -28,10 +28,9 @@ public class GPUImageViewPreview extends Activity {
         UsbCameraConfig usbCameraConfig = new UsbCameraConfig.Builder()
                 .setPreviewView(gpuImageView) // 设置预览视图
                 .setActivity(GPUImageViewPreview.this) // 设置当前activity上下文
-                .setResolution(UsbCameraConstant.RESOLUTION_720) // 设置分辨率
+                .setResolution(UsbCameraConstant.RESOLUTION_1080) // 设置分辨率
                 .setPreviewSize(UsbCameraConstant.SIZE_SMALL) // 设置预览尺寸
                 .setCameraServiceCallback(callback) // 设置服务启动|停止状态回调
-                .setTag("tag02")
                 .build();
         UsbCameraManager.init(usbCameraConfig);
     }

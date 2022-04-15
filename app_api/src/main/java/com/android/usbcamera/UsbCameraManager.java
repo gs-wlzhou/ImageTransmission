@@ -30,7 +30,6 @@ public class UsbCameraManager {
         activity = usbCameraConfig.getActivity();
         CameraService.setResolution(usbCameraConfig.getResolution());
         CameraService.setPreviewSize(usbCameraConfig.getPreviewSize());
-        LogUtils.setTAG(usbCameraConfig.getTag());
     }
 
     /**
