@@ -82,15 +82,17 @@
 
 # 不混淆某个类（使用者可以看到全部信息）
 -keep class com.android.usbcamera.UsbCameraConstant {*;}
+-keep class com.android.usbcamera.UsbCameraConfig {*;}
 # 不混淆某个类（使用者可以看到类名）
 -keep class com.android.usbcamera.CameraService
 -keep class com.android.usbcamera.UsbCameraManager
 # 不混淆某个类的特定的方法
 -keepclassmembers class com.android.usbcamera.UsbCameraManager {
+    public void init(com.android.usbcamera.UsbCameraConfig);
     public void startUsbCameraPreview();
     public void stopUsbCameraPreview();
-    public void previewSizeChange();
     public void sharpenChange(java.lang.Integer);
 }
 #不混淆某个类的内部类
 -keep class com.android.usbcamera.UsbCameraManager$*{*;}
+-keep class com.android.usbcamera.UsbCameraConfig$*{*;}

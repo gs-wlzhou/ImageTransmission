@@ -30,6 +30,7 @@ import android.util.Range;
 import android.view.Surface;
 import android.view.TextureView;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -72,8 +73,12 @@ public class CameraService extends Service implements UsbDeviceReceiver.UsbDevic
     private static int width;
     private static int height;
 
-    private Range<Integer> fpsRange = new Range<>(30, 30); // 预览画面帧率
-    private static int sleepTime; // 帧率输出间隔时间
+    private static final Range<Integer> fpsRange = new Range<>(30, 30); // 预览画面帧率
+
+    // 预览尺寸
+    private static final int[] smallSize = {960, 540};
+    private static final int[] largeSize = {1920, 1080};
+    private static int[] curSize;
 
     @Override
     public void onCreate() {
@@ -144,6 +149,7 @@ public class CameraService extends Service implements UsbDeviceReceiver.UsbDevic
 
     // 设置预览画面显示位置
     public static void setPreviewView(View view) {
+        LogUtils.d("set preview view -> " + view.getClass().getSimpleName());
         previewView = view;
         String className = previewView.getClass().getSimpleName();
         if (className.equals("GPUImageView")) {
@@ -157,6 +163,7 @@ public class CameraService extends Service implements UsbDeviceReceiver.UsbDevic
 
     // 设置显示分辨率
     public static void setResolution(String resolution) {
+        LogUtils.d("set resolution -> " + resolution);
         if (UsbCameraConstant.RESOLUTION_1080.equals(resolution)) {
             width = 1920;
             height = 1080;
@@ -166,15 +173,23 @@ public class CameraService extends Service implements UsbDeviceReceiver.UsbDevic
         }
     }
 
-    // 设置帧率输出间隔时间
-    public static void setFrameRate(String frameRate) {
-        if (UsbCameraConstant.FRAME_RATE_LOW.equals(frameRate)) {
-            sleepTime = 50;
-        } else if (UsbCameraConstant.FRAME_RATE_MEDIUM.equals(frameRate)) {
-            sleepTime = 40;
-        } else if (UsbCameraConstant.FRAME_RATE_HIGH.equals(frameRate)) {
-            sleepTime = 30;
+    // 设置预览尺寸
+    public static void setPreviewSize(String previewSize) {
+        LogUtils.d("set preview size -> " + previewSize);
+        if (UsbCameraConstant.SIZE_SMALL.equals(previewSize)) {
+            curSize = smallSize;
+        } else if (UsbCameraConstant.SIZE_LARGE.equals(previewSize)) {
+            curSize = largeSize;
         }
+    }
+
+    // 改变预览大小
+    private static void changePreviewSize() {
+        ViewGroup.LayoutParams layoutParams = previewView.getLayoutParams();
+        layoutParams.width = curSize[0];
+        layoutParams.height = curSize[1];
+        previewView.setLayoutParams(layoutParams);
+        LogUtils.d("preview size change");
     }
 
     // 数据初始化
@@ -247,17 +262,14 @@ public class CameraService extends Service implements UsbDeviceReceiver.UsbDevic
                         byte[] bytes = ImageUtils.generateNV21Data(image);
                         gpuImageView.updatePreviewFrame(bytes, width, height);
                         image.close();
-                        try {
-                            Thread.sleep(sleepTime); // 每帧画面间隔指定时间刷新
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
                     }
                 });
             } catch (Exception e) {
                 LogUtils.e("sending message to a Handler on a dead thread");
             }
         }, cameraHandler);
+
+        changePreviewSize(); // 设置预览尺寸大小
     }
 
     // 为摄像头开一个线程

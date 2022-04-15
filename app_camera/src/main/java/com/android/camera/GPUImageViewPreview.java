@@ -7,6 +7,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.android.usbcamera.UsbCameraConfig;
 import com.android.usbcamera.UsbCameraConstant;
 import com.android.usbcamera.UsbCameraManager;
 
@@ -17,8 +18,6 @@ public class GPUImageViewPreview extends Activity {
     private GPUImageView gpuImageView;
     private Button startBtn;
     private Button stopBtn;
-    private Button changeBtn;
-    private UsbCameraManager usbCameraManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,30 +25,29 @@ public class GPUImageViewPreview extends Activity {
         requestWindowFeature(Window.FEATURE_NO_TITLE); // 设置窗口没有标题
         setContentView(R.layout.preview_gpuimageview);
         initView();
-        usbCameraManager = new UsbCameraManager.Builder()
-                .previewView(gpuImageView) // 设置预览视图
-                .activity(GPUImageViewPreview.this) // 设置当前activity上下文
-                .resolution(UsbCameraConstant.RESOLUTION_720) // 设置分辨率
-                .frameRate(UsbCameraConstant.FRAME_RATE_LOW) // 设置帧率
-                .cameraServiceCallback(callback) // 设置服务状态回调
-                .tag("tag02") // 设置日志tag
+        UsbCameraConfig usbCameraConfig = new UsbCameraConfig.Builder()
+                .setPreviewView(gpuImageView) // 设置预览视图
+                .setActivity(GPUImageViewPreview.this) // 设置当前activity上下文
+                .setResolution(UsbCameraConstant.RESOLUTION_720) // 设置分辨率
+                .setPreviewSize(UsbCameraConstant.SIZE_SMALL) // 设置预览尺寸
+                .setCameraServiceCallback(callback) // 设置服务启动|停止状态回调
+                .setTag("tag02")
                 .build();
+        UsbCameraManager.init(usbCameraConfig);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        usbCameraManager.stopUsbCameraPreview(); // 停止预览
+        UsbCameraManager.stopUsbCameraPreview(); // 停止预览
     }
 
     private void initView() {
         gpuImageView = findViewById(R.id.iv);
         startBtn = findViewById(R.id.start);
         stopBtn = findViewById(R.id.stop);
-        changeBtn = findViewById(R.id.change);
         startBtn.setOnClickListener(onClickListener);
         stopBtn.setOnClickListener(onClickListener);
-        changeBtn.setOnClickListener(onClickListener);
     }
 
     private View.OnClickListener onClickListener = new View.OnClickListener() {
@@ -57,13 +55,10 @@ public class GPUImageViewPreview extends Activity {
         public void onClick(View view) {
             switch (view.getId()) {
                 case R.id.start:
-                    usbCameraManager.startUsbCameraPreview(); // 开启预览
+                    UsbCameraManager.startUsbCameraPreview(); // 开启预览
                     break;
                 case R.id.stop:
-                    usbCameraManager.stopUsbCameraPreview(); // 停止预览
-                    break;
-                case R.id.change:
-                    usbCameraManager.previewSizeChange(); // 预览尺寸切换
+                    UsbCameraManager.stopUsbCameraPreview(); // 停止预览
                     break;
             }
         }

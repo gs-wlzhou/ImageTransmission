@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context=".TextureViewPreview">
 
     <jp.co.cyberagent.android.gpuimage.GPUImageView
@@ -16,21 +15,14 @@
         android:id="@+id/start"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/change"
-        android:text="开始" />
-
-    <Button
-        android:id="@+id/change"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:text="改变" />
+        android:text="开始" />
 
     <Button
         android:id="@+id/stop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/change"
+        android:layout_below="@+id/start"
         android:text="停止" />
 
 </RelativeLayout>
