@@ -158,6 +158,7 @@ public class CameraService extends Service implements UsbDeviceReceiver.UsbDevic
             imageSharpen();
         } else if (className.equals("TextureView")) {
             textureView = (TextureView) view;
+            textureView.setScaleX(-1f);
         }
     }
 
@@ -220,7 +221,6 @@ public class CameraService extends Service implements UsbDeviceReceiver.UsbDevic
                     Surface surface = imageReader.getSurface();
                     takePreview(surface);
                 } else if (className.equals("TextureView")) {
-                    textureView.setScaleX(-1f);
                     SurfaceTexture surfaceTexture = textureView.getSurfaceTexture();
                     surfaceTexture.setDefaultBufferSize(width, height);
                     Surface surface = new Surface(surfaceTexture);
