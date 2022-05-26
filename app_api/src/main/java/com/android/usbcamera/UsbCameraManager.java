@@ -1,6 +1,7 @@
 package com.android.usbcamera;
 
 import android.app.Activity;
+import android.app.Application;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -8,6 +9,7 @@ import android.content.ServiceConnection;
 import android.os.IBinder;
 import android.os.RemoteException;
 
+import com.android.usbcamera.utils.AppGlobals;
 import com.android.usbcamera.utils.LogUtils;
 
 public class UsbCameraManager {
@@ -15,6 +17,7 @@ public class UsbCameraManager {
     private static ICameraService cameraService;
     private static Activity activity;
     private static CameraServiceCallback callback;
+    private static Context context;
 
     // 服务开启状态
     private static boolean status = false;
@@ -30,6 +33,7 @@ public class UsbCameraManager {
         activity = usbCameraConfig.getActivity();
         CameraService.setResolution(usbCameraConfig.getResolution());
         CameraService.setPreviewSize(usbCameraConfig.getPreviewSize());
+        context = AppGlobals.getAppContext();
     }
 
     /**
@@ -70,9 +74,9 @@ public class UsbCameraManager {
     // 绑定服务
     private static void bindCameraService() {
         LogUtils.d("bind camera service");
-        Intent intent = new Intent(activity, CameraService.class);
-        activity.startService(intent);
-        boolean flag = activity.bindService(intent, cameraServiceConnection, Context.BIND_AUTO_CREATE);
+        Intent intent = new Intent(context, CameraService.class);
+        context.startService(intent);
+        boolean flag = context.bindService(intent, cameraServiceConnection, Context.BIND_AUTO_CREATE);
         LogUtils.d("isBind -> " + flag);
 
         if (flag && callback != null) {
@@ -83,9 +87,9 @@ public class UsbCameraManager {
     // 解绑服务
     private static void unBindCameraService() {
         LogUtils.d("unBind camera service");
-        Intent intent = new Intent(activity, CameraService.class);
-        activity.unbindService(cameraServiceConnection);
-        activity.stopService(intent);
+        Intent intent = new Intent(context, CameraService.class);
+        context.unbindService(cameraServiceConnection);
+        context.stopService(intent);
 
         if (callback != null) {
             callback.onServiceStop();
